@@ -1,0 +1,45 @@
+name: Bug report
+description: Report a reproducible issue using synthetic, non-sensitive data.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before reporting, read [Project status](../../docs/PROJECT_STATUS.md) and [Security policy](../../SECURITY.md).
+        Do not include device IDs, accounts, credentials, real screenshots, production logs or customer data. Vulnerabilities must be reported privately.
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system, Node version, source commit, and whether this is an isolated test machine.
+      placeholder: "Windows / Node 24 / source commit / disposable lab"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce with synthetic data
+      description: Include safe minimal reproduction steps; omit real account and device identifiers.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Safety checklist
+      options:
+        - label: This report contains no secrets, customer data or private device details.
+          required: true
+        - label: This is not a security vulnerability report that should be disclosed privately.
+          required: true

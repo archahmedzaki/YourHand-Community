@@ -1,0 +1,32 @@
+name: Feature request
+description: Suggest a scoped and permission-aware improvement.
+title: "[Feature]: "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and use case
+      description: Describe the user need without private account, customer or device information.
+    validations:
+      required: true
+  - type: textarea
+    id: approach
+    attributes:
+      label: Proposed behavior and authorization boundary
+      description: Explain affected devices/users, side effects and expected confirmation behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Reproducible acceptance criteria
+      description: Prefer synthetic tests; include relevant privacy and cross-account failure cases.
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy
+      options:
+        - label: The request includes no real secrets, customer files or private device identifiers.
+          required: true
