@@ -12,7 +12,7 @@
 
 ## Demonstrated checks
 
-The repository's `npm test` suite exercises isolated usage separation, approval gates, capability routing and privacy-safe telemetry. `npm run test:privacy` checks known private-file and credential patterns in the **working directory**. An independently authorized CI workflow is prepared but not yet published; maintainers must run these checks on clean checkouts manually before accepting updates. Test results are not evidence of complete Windows hardware, browser, billing, production OAuth or real-customer acceptance testing.
+The repository's `npm test` suite exercises isolated usage separation, approval gates, capability routing and privacy-safe telemetry. `npm run test:privacy` checks known private-file and credential patterns in the **working directory**. An independently authorized CI workflow is [prepared as a public template](CI_WORKFLOW_TEMPLATE.yml) but **is not active**; maintainers must run these checks on clean checkouts manually before accepting updates. GitHub's native Secret Scanning, Push Protection and Dependabot security updates are enabled separately and do not replace the inactive CI jobs. Test results are not evidence of complete Windows hardware, browser, billing, production OAuth or real-customer acceptance testing.
 
 ## Not yet delivered or independently verified
 

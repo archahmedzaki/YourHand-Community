@@ -1,0 +1,60 @@
+# INACTIVE TEMPLATE: GitHub Actions will not run this file at this location.
+# Repository owner must copy it to .github/workflows/ci.yml using an authorized
+# GitHub session or a credential granted the workflow scope, then verify a green run.
+# The repository currently has no active workflow; do not treat this template as CI.
+name: Community source checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: source-checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unit-and-privacy:
+    name: Node 24 source and privacy
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Check out public source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Isolated unit tests
+        run: npm test
+      - name: Source and documentation checks
+        run: npm run test:source
+      - name: Known-private-data guard
+        run: npm run test:privacy
+
+  secret-patterns:
+    name: Independent source secret scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Check out public source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install reviewed secret scanner version
+        run: python3 -m pip install --disable-pip-version-check detect-secrets==1.5.0
+      - name: Reject new secret candidates
+        shell: bash
+        run: |
+          detect-secrets scan --all-files --no-verify > "${RUNNER_TEMP}/yourhand-secret-scan.json"
+          python3 scripts/check_secret_scan.py "${RUNNER_TEMP}/yourhand-secret-scan.json"

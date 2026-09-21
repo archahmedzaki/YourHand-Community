@@ -73,7 +73,7 @@ For a **local lab only**, copy `.env.example` to an untracked `.env`, review eac
 | [Privacy and data](docs/PRIVACY_AND_DATA.md) | What operators must protect and disclose |
 | [Compatibility](docs/COMPATIBILITY.md) | Supported source targets and unavailable packaged features |
 | [FAQ](docs/FAQ.md) | Licensing, app-store, installer and donation questions |
-| [Automation and CI](docs/AUTOMATION_AND_CI.md) | Local checks and the prepared but not yet published CI workflow |
+| [Automation and CI](docs/AUTOMATION_AND_CI.md) | Local checks, enabled GitHub secret protection and the inactive [CI template](docs/CI_WORKFLOW_TEMPLATE.yml) |
 | [Release process](docs/RELEASING.md) | Source and binary release acceptance criteria |
 | [Troubleshooting](docs/TROUBLESHOOTING.md) | Common local development failures |
 | [Roadmap](docs/ROADMAP.md) | Publicly tracked directions, without delivery promises |
