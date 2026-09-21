@@ -9,7 +9,7 @@
 **Open-source Windows device control through a permission-aware MCP server.**
 
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
-[![CI](https://github.com/archahmedzaki/YourHand-OpenSource/actions/workflows/ci.yml/badge.svg)](.github/workflows/ci.yml)
+[![CI](https://github.com/archahmedzaki/YourHand-Community/actions/workflows/ci.yml/badge.svg)](.github/workflows/ci.yml)
 [![Source preview](https://img.shields.io/badge/release-source%20preview-orange)](docs/PROJECT_STATUS.md)
 
 [Overview](#overview) · [Get started](#get-started) · [Documentation](#documentation) · [Roadmap](docs/ROADMAP.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
@@ -52,8 +52,8 @@ Developers exploring agentic computer interaction, Windows automation maintainer
 **Prerequisites:** Windows for native helper integration; Node.js **24+** and npm; a local development-only directory; .NET Framework C# build tools for the optional native helper. Any OAuth-enabled web demo requires your **own** Google OAuth configuration.
 
 ```powershell
-git clone https://github.com/archahmedzaki/YourHand-OpenSource.git
-cd YourHand-OpenSource
+git clone https://github.com/archahmedzaki/YourHand-Community.git
+cd YourHand-Community
 npm ci
 npm test
 npm run test:privacy
@@ -91,7 +91,7 @@ The community source is distributed under **GNU AGPL-3.0-only**; see [LICENSE](L
 
 ## Community and safety
 
-Please use [GitHub Issues](https://github.com/archahmedzaki/YourHand-OpenSource/issues) for sanitized bug reports and discussions, following our [Code of Conduct](CODE_OF_CONDUCT.md). **Never post pairing tokens, device identifiers, API keys, customer screenshots, databases or service logs.** Security problems should follow [private reporting instructions](SECURITY.md), not public issues.
+Please use [GitHub Issues](https://github.com/archahmedzaki/YourHand-Community/issues) for sanitized bug reports and discussions, following our [Code of Conduct](CODE_OF_CONDUCT.md). **Never post pairing tokens, device identifiers, API keys, customer screenshots, databases or service logs.** Security problems should follow [private reporting instructions](SECURITY.md), not public issues.
 
 If you would like to support ongoing development, see [SUPPORT.md](SUPPORT.md). Donations are optional; there is **no active PayPal link in this repository yet**, and donating does not purchase access or support privileges.
 

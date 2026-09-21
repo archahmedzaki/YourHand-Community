@@ -4,7 +4,7 @@ Security issues in a computer-control project can affect real machines and priva
 
 ## Private vulnerability reports
 
-Use the repository's [Security Advisories](https://github.com/archahmedzaki/YourHand-OpenSource/security/advisories) page and choose **Report a vulnerability**. Private vulnerability reporting is enabled for the official public repository. If you cannot access the reporting form, open a **non-sensitive** issue asking the maintainer for a private channel, without including exploit details or private data. The maintainer must establish a secure private exchange before receiving sensitive evidence. Do not send secrets to an unverified account or URL.
+Use the repository's [Security Advisories](https://github.com/archahmedzaki/YourHand-Community/security/advisories) page and choose **Report a vulnerability**. Private vulnerability reporting is enabled for the official public repository. If you cannot access the reporting form, open a **non-sensitive** issue asking the maintainer for a private channel, without including exploit details or private data. The maintainer must establish a secure private exchange before receiving sensitive evidence. Do not send secrets to an unverified account or URL.
 
 A useful private report includes: affected source version/commit, impacted component, reproducible test conditions on a disposable device, severity rationale, expected vs observed permission boundary, and a minimal sanitized proof of concept. Avoid using other people's devices or live customer accounts to verify an issue.
 

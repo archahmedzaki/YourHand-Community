@@ -11,8 +11,8 @@ This guide covers **source inspection and isolated tests**, not production insta
 ## 1. Get the source
 
 ```powershell
-git clone https://github.com/archahmedzaki/YourHand-OpenSource.git
-cd YourHand-OpenSource
+git clone https://github.com/archahmedzaki/YourHand-Community.git
+cd YourHand-Community
 npm ci
 npm test
 npm run test:privacy

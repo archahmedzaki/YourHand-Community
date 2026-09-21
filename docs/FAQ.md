@@ -34,4 +34,4 @@ Yes, optional donor-selected support is planned. There is no verified live PayPa
 
 ### Where can I report problems?
 
-Use sanitized [GitHub Issues](https://github.com/archahmedzaki/YourHand-OpenSource/issues) for non-sensitive reports. See [Security](../SECURITY.md) for private vulnerability reporting.
+Use sanitized [GitHub Issues](https://github.com/archahmedzaki/YourHand-Community/issues) for non-sensitive reports. See [Security](../SECURITY.md) for private vulnerability reporting.

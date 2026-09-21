@@ -1,6 +1,6 @@
 # Continuous checks and automation
 
-**Status: GitHub Actions CI is active.** The authoritative workflow is [`.github/workflows/ci.yml`](../.github/workflows/ci.yml). It runs on pushes and pull requests to `main`, with read-only repository permissions and no production deployment credentials. The two CI jobs **both passed** on 2026-09-21 at public commit `708c97d`: [verified workflow run](https://github.com/archahmedzaki/YourHand-OpenSource/actions/runs/35642603880).
+**Status: GitHub Actions CI is active.** The authoritative workflow is [`.github/workflows/ci.yml`](../.github/workflows/ci.yml). It runs on pushes and pull requests to `main`, with read-only repository permissions and no production deployment credentials. The two CI jobs **both passed** on 2026-09-21 at public commit `708c97d`: [verified workflow run](https://github.com/archahmedzaki/YourHand-Community/actions/runs/35642603880).
 
 ## Checks on each change
 
