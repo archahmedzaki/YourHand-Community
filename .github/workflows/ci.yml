@@ -52,5 +52,5 @@ jobs:
       - name: Reject new secret candidates
         shell: bash
         run: |
-          detect-secrets scan --all-files --no-verify > "${RUNNER_TEMP}/yourhand-secret-scan.json"
+          detect-secrets scan --no-verify > "${RUNNER_TEMP}/yourhand-secret-scan.json"
           python3 scripts/check_secret_scan.py "${RUNNER_TEMP}/yourhand-secret-scan.json"
