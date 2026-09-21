@@ -4,6 +4,8 @@
 
 ## Checks
 
+A fresh public checkout was independently tested on 2026-09-21 in an isolated Windows lab: cached `npm ci`, `npm test`, `npm run test:source`, `npm run test:privacy`, native helper compilation and `npm run test:native` passed. These manually run checks are **not** GitHub Actions runs. npm vulnerability-audit retrieval timed out; do not infer third-party packages are vulnerability-free.
+
 - Node.js 24, `npm ci`, and the source's isolated `npm test` suite.
 - `npm run test:source`: source syntax, self-contained relative imports, native-helper source-path fixture and Markdown local links.
 - `npm run test:privacy`: known private filenames/device identifiers and common embedded-key patterns in the checkout.

@@ -4,6 +4,8 @@ Notable changes to the community repository will be recorded here. This log is f
 
 ## Unreleased
 
+- Verified a fresh clone of the public source on an isolated Windows lab: cached npm installation, unit/source/privacy tests, native C# compilation and read-only native approval-gate coverage passed. Full real-device pairing and production upgrades remain untested.
+
 - Expanded developer documentation, security and contribution policies, roadmap, issue/PR guidance and local automated checks. A public workflow template is available under `docs/CI_WORKFLOW_TEMPLATE.yml`; it is not active pending separate GitHub workflow permission.
 - Enabled GitHub Secret Scanning, Push Protection and Dependabot security updates on the public repository.
 - Added a source-checkout native-helper path module and synthetic path resolution test.
