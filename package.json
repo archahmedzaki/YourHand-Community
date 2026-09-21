@@ -7,7 +7,7 @@
     "start": "node server-multiuser.js",
     "agent": "node yourhand-agent.mjs",
     "test": "node tests/per-device-usage-meter.cjs && node tests/approval-wait-policy.cjs && node tests/capability-router.cjs && node tests/call-telemetry-privacy.cjs",
-    "test:source": "node --check server-multiuser.js && node --check yourhand-agent.mjs && node --check src/multiuser/native-helper-path.mjs && node tests/native-helper-path.cjs && node tests/documentation-links.cjs",
+    "test:source": "node --check server-multiuser.js && node --check yourhand-agent.mjs && node --check src/multiuser/native-helper-path.mjs && node tests/native-helper-path.cjs && node tests/documentation-links.cjs && node tests/plugin-tool-annotations.cjs",
     "test:privacy": "node tests/public-release-privacy.cjs",
     "test:native": "node tests/native-approval-gate-coverage.cjs"
   },
