@@ -72,6 +72,7 @@ For a **local lab only**, copy `.env.example` to an untracked `.env`, review eac
 | [Architecture](docs/ARCHITECTURE.md) | Components, identity, flow and deployment boundaries |
 | [Configuration](docs/CONFIGURATION.md) | Environment variables and secrets handling |
 | [MCP and device access](docs/MCP_AND_DEVICES.md) | Tool groups, authorization, safety and availability |
+| [OpenAI plugin directory submission](docs/OPENAI_PLUGIN_SUBMISSION.md) | Evidence-backed public submission packet, requirements, review fixtures and outstanding gates |
 | [Threat model](docs/THREAT_MODEL.md) | Assets, trust boundaries, mitigations and risks |
 | [Privacy and data](docs/PRIVACY_AND_DATA.md) | What operators must protect and disclose |
 | [Compatibility](docs/COMPATIBILITY.md) | Supported source targets and unavailable packaged features |
