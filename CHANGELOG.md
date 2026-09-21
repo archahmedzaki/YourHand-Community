@@ -8,6 +8,7 @@ Notable changes to the community repository will be recorded here. This log is f
 
 - Expanded developer documentation, security and contribution policies, roadmap, issue/PR guidance and local automated checks. Activated the [GitHub Actions workflow](.github/workflows/ci.yml); both Node/source/privacy and independent tracked-source secret scan jobs passed on commit `708c97d`. Removed the obsolete inactive workflow template.
 - Enabled GitHub Secret Scanning, Push Protection and Dependabot security updates on the public repository.
+- Protected the public `main` branch with strict required source/privacy and secret-scan checks; disabled force pushes and branch deletion while preserving the owner's GitHub administrator bypass.
 - Added a source-checkout native-helper path module and synthetic path resolution test.
 - Clarified source-preview limitations, separate hosted service and pending CLA signing workflow.
 

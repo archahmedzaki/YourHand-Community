@@ -12,7 +12,7 @@ A fresh public checkout was also independently tested on 2026-09-21 in an isolat
 
 ## Maintainer controls
 
-Review all changes and enforce successful CI checks before merging contributions. Confirm any GitHub branch-protection or ruleset requirements from the actual repository settings; this document does not activate them. External code contributions are **not accepted for merge** until the [non-exclusive CLA](../CONTRIBUTOR_LICENSE_AGREEMENT.md) is legally finalized, signed by the proper rights holder and verified. A PR checkbox or DCO sign-off cannot substitute for this separate commercial sublicensing permission. See [CLA FAQ](CLA_FAQ.md).
+Review all changes and enforce successful CI checks before merging contributions. The public repository's `main` branch is now protected: both the **Node 24 source and privacy** and **Independent source secret scan** checks are required, with strict up-to-date checks. Force pushes and branch deletion are disabled. Repository administrators retain GitHub's configured bypass (`enforce_admins=false`) to avoid preventing the owner from maintaining the source; this does not replace the maintainer's obligation to inspect changes. Verify current settings in GitHub before changing branch rules. External code contributions are **not accepted for merge** until the [non-exclusive CLA](../CONTRIBUTOR_LICENSE_AGREEMENT.md) is legally finalized, signed by the proper rights holder and verified. A PR checkbox or DCO sign-off cannot substitute for this separate commercial sublicensing permission. See [CLA FAQ](CLA_FAQ.md).
 
 ## Security limitations
 
