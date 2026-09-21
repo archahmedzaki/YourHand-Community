@@ -26,4 +26,4 @@ You can discuss bugs and ideas using sanitized issues. **External PRs are not be
 
 No. Accepted source distributed under AGPL remains AGPL for public recipients. Separate additional licensing permission allows the maintainer to issue **distinct** builds under different terms only to the extent all relevant copyright and dependency rights permit.
 
-See [Licensing policy](LICENSING_POLICY.md) and [Contributing](../CONTRIBUTING.md).
+See [Licensing policy](LICENSING_POLICY.md), [Counsel review packet](CLA_COUNSEL_REVIEW.md), [Corporate rights-holder draft](CLA_CORPORATE_DRAFT.md), [Planned signing integration](CLA_SIGNING_SETUP.md) and [Contributing](../CONTRIBUTING.md).

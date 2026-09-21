@@ -4,6 +4,9 @@ Notable changes to the community repository will be recorded here. This log is f
 
 ## Unreleased
 
+- Prepared expanded individual and corporate non-exclusive CLA drafts and a qualified-counsel review/signing plan; **signature acceptance is not active** and commercial re-licensing rights in outside work are not assumed.
+- Recorded independent disposable loopback lab results: 18/18 source/identity/device protocol checks passed (including expected HTTP 503 on the absent installer), while real Google OAuth and full separate Windows installation remain untested.
+
 - Verified a fresh clone of the public source on an isolated Windows lab: cached npm installation, unit/source/privacy tests, native C# compilation and read-only native approval-gate coverage passed. Full real-device pairing and production upgrades remain untested.
 
 - Expanded developer documentation, security and contribution policies, roadmap, issue/PR guidance and local automated checks. Activated the [GitHub Actions workflow](.github/workflows/ci.yml); both Node/source/privacy and independent tracked-source secret scan jobs passed on commit `708c97d`. Removed the obsolete inactive workflow template.

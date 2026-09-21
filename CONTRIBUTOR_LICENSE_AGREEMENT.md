@@ -1,26 +1,49 @@
-# YourHand Contributor License Agreement (CLA) — DRAFT FOR LEGAL REVIEW
+# YourHand Individual Contributor License Agreement (CLA) — REVISED PROPOSAL
 
-**This is a proposed non-exclusive CLA, not an executed agreement. No contributor submissions are accepted under it until the owner finalizes the text, names the legal recipient, and enables a verifiable signing workflow.**
+**STATUS: UNAPPROVED DRAFT — NOT A SIGNABLE AGREEMENT.** The recipient's legal identity/capacity, governing law, patent provisions, signatures and evidence/retention procedure require qualified independent legal review. Do not accept outside code into the official project or its proprietary edition on the strength of this draft.
 
-## 1. Parties and contributions
-"Maintainer" means Ahmed Zaki, as the individual owner/maintainer of the YourHand project, or a legal successor to whom the rights granted here are validly transferred. "You" means the individual signing and, only when expressly authorized to sign on its behalf, the legal entity that owns the submitted material. "Contribution" means copyrightable code, documentation, tests, designs, or other material You intentionally submit for inclusion in the official YourHand repositories, excluding material You clearly designate in writing as not a contribution.
+## 1. Parties, project and scope
 
-## 2. Ownership
-You retain ownership of the copyright and other rights in Your original Contributions. This agreement does not assign copyright to the Maintainer, and it does not change your right to use or license your own work elsewhere.
+**Recipient:** Ahmed Zaki, in the individual or duly documented corporate capacity approved in the final signed contract ("Maintainer"). **Contributor ("You"):** the individual who signs the approved agreement and has the rights described below. "Project" means the independently published YourHand-Community source project and separate authorized YourHand editions. "Contribution" means original material intentionally submitted by You for inclusion in the Maintainer's official project repository, including code, tests, designs and documentation, and subsequent intentionally submitted revisions. Material expressly marked as not contributed is excluded.
 
-## 3. Broad, non-exclusive copyright grant
-You grant the Maintainer a perpetual, worldwide, non-exclusive, royalty-free, fully paid-up, irrevocable copyright license (to the extent the grant may lawfully be irrevocable) to reproduce, use, modify, prepare derivative works from, publicly display, publicly perform, distribute, make available over networks, license, and sublicense Your Contributions and derivatives. This grant expressly permits, at the Maintainer's discretion, release under AGPL-3.0-only, under other open-source licenses, or under separate proprietary or commercial terms, including incorporation in a closed-source hosted service or client application without a further royalty to You. The Maintainer may transfer or sublicense rights needed to operate or transfer the YourHand project or relevant business.
+This is **not** a transfer or assignment of copyright. You retain your copyright and remain free to use/license your own original work elsewhere.
 
-## 4. Authority and provenance
-You represent that You own the rights You purport to grant, or have obtained explicit permission from all relevant owners (including an employer where applicable); that Your Contribution is not subject to undisclosed third-party license obligations or confidentiality restrictions incompatible with this agreement; and that You will identify third-party material and its existing license in your pull request. This CLA cannot expand rights in third-party material You do not own. If employer or company rights exist, an authorized rights holder must execute a separate appropriate entity agreement before acceptance.
+## 2. Explicit, non-exclusive copyright permission
 
-## 5. Patent considerations
-No implied patent license is created by the copyright clause above. Any explicit patent grant, applicable jurisdictions, patent retaliation language, warranties, authority checks and data protection provisions must be reviewed and finalized by qualified counsel before this CLA is used to accept contributions. Do not assume patent rights have been granted by signing this unfinished draft.
+For Contributions that You own or have actual authority to license, You grant the Maintainer and its valid successors a perpetual, worldwide, non-exclusive, fully paid-up, royalty-free, transferable and sublicensable copyright license, to the extent legally enforceable, to reproduce, use, modify, prepare derivative works, compile, execute, publicly display/perform, distribute, offer and make available over networks the Contributions and derivatives, in source and object form.
 
-## 6. No obligation to accept
-The Maintainer may reject or revert contributions. If a contribution is incorporated into the public source tree, that distributed version remains subject to its published open-source license; this agreement does not remove recipients' existing AGPL rights.
+**Commercial/dual-license authorization:** This license expressly permits incorporation in both the publicly distributed GNU AGPL-3.0-only YourHand Community edition and one or more separately licensed **proprietary, closed-source, hosted, commercial, desktop and SaaS** YourHand editions, including selling access and sublicensing those editions, without separate approval or additional royalty to You for those permitted uses. The Maintainer may choose not to release an eligible Contribution publicly, provided no existing recipient's AGPL rights are taken away. The Maintainer is not obliged to merge a Contribution.
 
-## 7. Evidence and consent — to be finalized
-The signing workflow must identify the applicable rights holder, exact version of this agreement, timestamp and GitHub account, and record express consent before PR merge. Mere submission of a PR or a sign-off line is not treated as sufficient acceptance of a yet-unfinalized CLA.
+The grant applies only to rights You hold or are authorized to grant. It cannot remove AGPL rights already given to recipients of public copies or override unrelated third-party copyleft obligations in a combined work.
 
-**Do not activate a CLA bot against this draft. Obtain a legal review before collecting signatures or claiming these terms are enforceable.**
+## 3. Proposed patent grant — requires counsel verification
+
+Subject to applicable law, You also propose to grant the Maintainer and lawful downstream recipients of Your licensed Contribution a perpetual, worldwide, non-exclusive, royalty-free, transferable and sublicensable patent license to make, have made, use, offer for sale, sell, import and otherwise exploit only those patent claims **owned or controlled and licensable by You** that would necessarily be infringed by Your Contribution alone, or by its combination with the Project version to which the Contribution was intentionally submitted. This proposed grant includes both the AGPL and separately licensed commercial/proprietary editions to the extent these claims necessarily apply to the submitted contribution. It does not license independently unrelated technology or third-party patent rights.
+
+**Defensive termination proposal:** Where allowed by law, the relevant patent grant to a person asserting patent infringement against You based on the same Contribution or its relevant Project combination may terminate subject to the final counsel-approved scope and safeguards. This entire section must be legally reviewed before a signer is invited to assent; no patent rights should be presumed to have been received under this unfinished draft.
+
+## 4. Authorship, employer authority and third-party material
+
+You represent, to the extent permitted by law, that You are legally entitled to grant the specific rights above, and that submitted original Contributions do not breach another party's confidentiality or intellectual-property rights. If employment, contract or company policy vests any rights in another entity, obtain that rights-holder's **authorized** separate corporate agreement or legally sufficient permission before acceptance. Your personal GitHub account does not evidence employer authority.
+
+Identify third-party code, generated content with applicable restrictions, patent notices and pre-existing licensed material in the relevant pull request; do not represent imported work as Your own or grant rights You do not control. The Maintainer must check inbound third-party licenses independently. You agree to inform the Maintainer if You later discover facts materially affecting these representations.
+
+## 5. Ownership, public license and no required acceptance
+
+You retain the copyright in Your own Contributions and may contribute them elsewhere. Source actually released by the Maintainer under AGPL-3.0-only remains available to its recipients under AGPL. The Maintainer may decline, modify or remove code subject to existing license rights and valid authorizations, and may separately distribute permitted owned/authorized contributions under other terms.
+
+## 6. Support and warranties
+
+You are not required to provide support or ongoing maintenance unless separately agreed. Subject to mandatory applicable law, Contributions are provided as-is, without a promise of fitness or uninterrupted operation. No clause here purports to waive rights that applicable law makes non-waivable.
+
+## 7. Consent, signatory evidence and confidentiality
+
+This draft is **not** accepted merely by opening a GitHub issue, submitting a PR, checking a box or adding a DCO sign-off. The final version must be approved by counsel and presented through an explicitly accepted signing workflow identifying the correct legal rights holder, contributor's authenticated GitHub account, exact CLA version and SHA-256, signed timestamp, contribution/PR/commit association and authorized corporate status where relevant. Sensitive full names, emails, authorization documents and signatures must be stored with restricted access under a lawyer-approved retention/privacy policy, not in public source or GitHub comments.
+
+A material change to the legal grant requires fresh consent before further Contributions are accepted under the changed terms, subject to the final agreement. A signature made for the individual signer's **own** rights does not grant rights belonging to an employer or co-author.
+
+## 8. Counsel-to-complete legal terms
+
+The final contract must identify the recipient in the correct legal capacity, its valid successors/transfers, mandatory contributor age/capacity rules, governing law and dispute forum, enforceability of grants and patent termination, moral rights and employment law, electronic-signature evidence, privacy and retention responsibilities, language/translation priority and corporate signatory authority. No legal forum, mandatory rights waiver or binding signature procedure is selected by this draft.
+
+**DO NOT ACTIVATE CLA SIGNATURE COLLECTION UNTIL THESE TERMS AND THE SEPARATE CORPORATE FORM ARE APPROVED BY QUALIFIED COUNSEL.** See [counsel review packet](docs/CLA_COUNSEL_REVIEW.md) and [signing setup plan](docs/CLA_SIGNING_SETUP.md).
