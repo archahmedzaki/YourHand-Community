@@ -1,0 +1,20 @@
+{
+  "name": "yourhand-community",
+  "version": "0.9.4-source-preview",
+  "description": "Self-hosted YourHand Core, Windows Agent, native helper and MCP server",
+  "main": "server-multiuser.js",
+  "scripts": {
+    "start": "node server-multiuser.js",
+    "agent": "node yourhand-agent.mjs",
+    "test": "node tests/per-device-usage-meter.cjs && node tests/approval-wait-policy.cjs && node tests/capability-router.cjs && node tests/call-telemetry-privacy.cjs"
+  },
+  "license": "AGPL-3.0-only",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "ws": "^8.21.3",
+    "zod": "^4.6.5"
+  },
+  "private": false
+}

@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>YourHand</title>
+  <!-- An HTTP entry must upgrade before Google Identity Services initializes. Cloudflare should additionally enforce HTTPS at the edge. -->
+  <script>if(location.protocol==="http:"&&location.hostname==="yourhand.wolvexai.com"){location.replace("https://yourhand.wolvexai.com"+location.pathname+location.search+location.hash);}</script>
+
+  <link rel="icon" type="image/png" href="/YourHand_256.png">
+  <link rel="apple-touch-icon" href="/YourHand_256.png">
+  <link rel="stylesheet" href="/style.css?v=20260921-community-v1">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="/"><img src="/YourHand_Web.png" alt=""><span>YourHand</span></a>
+      <div id="account"></div>
+    </header>
+
+    <section id="signed-out" class="hero hidden">
+      <img class="hero-logo" src="/YourHand_Web.png" alt="YourHand">
+      <h1>Your computer, in your hand.</h1>
+      <p>Connect once. Share access securely with invited team accounts.</p>
+      <div id="google-button" class="google-slot"></div>
+      <div id="login-status" class="tiny"></div>
+    </section>
+
+    <section id="dashboard" class="hidden">
+      <div class="workspace">
+        <section class="devices-panel" aria-labelledby="devices-title">
+          <div class="heading">
+            <div><h1 id="devices-title">My devices</h1><p>Devices you own or have been invited to use</p></div>
+            <div class="heading-ctas"><a class="ghost" href="/YourHand-Manager-Install.exe" download="YourHand-Manager-Install.exe" title="Windows app with system tray, start/stop and uninstall">Get Windows app</a><button id="add-device" class="primary">+ Add device</button></div>
+          </div>
+          <div id="devices" class="devices" aria-live="polite"></div>
+          <div id="device-pagination" class="device-pagination hidden">
+            <button id="devices-prev" class="ghost" type="button" aria-label="Previous devices">‹</button>
+            <span id="devices-page-label"></span>
+            <button id="devices-next" class="ghost" type="button" aria-label="Next devices">›</button>
+          </div>
+        </section>
+
+      <details class="diagnostics-panel" id="diagnostics-panel">
+        <summary>Connection &amp; command diagnostics <span class="tiny">Your account only · last 30 days</span></summary>
+        <p class="tiny">Device events, route IDs, attempt counts and response times. Raw commands, passwords, tokens and screen content are not stored. The shared device owner cannot read another Google account's command history.</p>
+        <div class="diagnostics-controls">
+          <label for="diagnostics-device">Device</label><select id="diagnostics-device"><option value="">All authorized devices</option></select>
+          <button id="diagnostics-refresh" class="ghost" type="button">Refresh diagnostics</button>
+        </div>
+        <div id="diagnostics-status" role="status" aria-live="polite" class="tiny">Open this panel to inspect your recent calls.</div>
+        <div class="diagnostics-scroll"><table aria-label="Recent call diagnostics"><thead><tr>
+          <th>Time</th><th>Method / route</th><th>Result</th><th>Attempts</th><th>Duration</th>
+        </tr></thead><tbody id="diagnostics-body"></tbody></table></div>
+      </details>
+
+      <section class="voice-panel" id="voice-panel" aria-labelledby="voice-title">
+        <h2 id="voice-title">YourHand Voice — preview</h2>
+        <p>Speak to YourHand directly in this dashboard. ChatGPT’s own Voice mode does not currently call custom connected tools. This preview handles device status and connection checks only; administrative or destructive commands are never executed from a raw transcript.</p>
+        <div class="voice-controls">
+          <label for="voice-device">Device</label>
+          <select id="voice-device" aria-label="Authorized device for spoken status check"></select>
+          <button id="voice-start" class="ghost" type="button">🎙 Start listening</button>
+          <button id="voice-stop" class="ghost" type="button" disabled>Stop mic</button>
+        </div>
+        <label for="voice-transcript">Recognized speech (editable)</label>
+        <div class="voice-controls">
+          <input id="voice-transcript" type="text" maxlength="320" placeholder="حالة الجهاز / اتصل بالجهاز / device status">
+          <button id="voice-send" class="primary" type="button">Check status</button>
+        </div>
+        <p id="voice-result" role="status" aria-live="polite">Microphone starts only after you click Start. Audio is not stored in YourHand diagnostics. Availability depends on your browser.</p>
+      </section>
+
+      <section class="chatgpt-setup" aria-labelledby="chatgpt-setup-title">
+        <div class="setup-head">
+          <div class="setup-title-wrap">
+            <img class="setup-logo" src="/YourHand_Web.png" alt="YourHand logo">
+            <div>
+            <span class="beta-badge">Beta setup</span>
+            <h2 id="chatgpt-setup-title">Connect YourHand to ChatGPT</h2>
+            <p>Until YourHand is published in the public plugin directory, add it once as a custom MCP in ChatGPT Developer Mode.</p>
+            </div>
+          </div>
+          <button id="copy-chatgpt-setup" class="ghost" type="button">Copy setup details</button>
+        </div>
+
+        <div class="setup-grid">
+          <div class="setup-field">
+            <span class="setup-label">Name</span>
+            <div class="copy-row"><code id="field-name">YourHand</code><button class="mini-copy" data-copy-target="field-name" type="button">Copy</button></div>
+          </div>
+          <div class="setup-field">
+            <span class="setup-label">Icon</span>
+            <div class="icon-field"><img src="/YourHand_256.png" alt="YourHand"><code id="field-icon" class="hidden">/YourHand_256.png</code><button class="mini-copy" data-copy-target="field-icon" type="button">Copy link</button><a class="mini-copy" href="/YourHand_256.png" download="YourHand_256.png">Download</a></div>
+          </div>
+          <div class="setup-field setup-wide">
+            <span class="setup-label">Description</span>
+            <div class="copy-row"><code id="plugin-description">Control your own Windows computers securely from ChatGPT. Open apps, read the screen, click, type, manage files, run commands, and automate tasks on devices linked to your YourHand account.</code><button class="mini-copy" data-copy-target="plugin-description" type="button">Copy</button></div>
+          </div>
+          <div class="setup-field setup-wide">
+            <span class="setup-label">Server URL</span>
+            <div class="copy-row"><code id="mcp-url">https://yourhand.wolvexai.com/mcp</code><button class="mini-copy" data-copy-target="mcp-url" type="button">Copy</button></div>
+          </div>
+          <div class="setup-field">
+            <span class="setup-label">Authentication</span>
+            <div class="copy-row"><code id="field-auth">OAuth</code><button class="mini-copy" data-copy-target="field-auth" type="button">Copy</button></div>
+          </div>
+          <div class="setup-field">
+            <span class="setup-label">Advanced OAuth settings</span>
+            <div class="copy-row"><code id="field-advanced">Leave automatic</code><button class="mini-copy" data-copy-target="field-advanced" type="button">Copy</button></div>
+          </div>
+        </div>
+
+        <div class="steps-head"><span>How to connect</span><span class="beta-badge">One-time setup</span></div>
+        <ol class="setup-steps">
+          <li>ChatGPT <strong>Settings → Plugins → Developer Mode → Create custom MCP</strong>.</li>
+          <li>Enter the fields above, add the icon and choose <strong>OAuth</strong>.</li>
+          <li><strong>Create → Google sign-in → Authorize</strong>. No manual tokens.</li>
+          <li>In any chat, call <strong>@YourHand</strong> and name your computer.</li>
+        </ol>
+        <div class="invoke-card"><span>At your hand — <strong>@YourHand</strong></span><div class="copy-row"><code id="field-example">@YourHand open Chrome on my computer</code><button class="mini-copy" data-copy-target="field-example" type="button">Copy</button></div></div>
+        <p class="setup-note">No ChatGPT password or manual tokens. Google login handles authorization securely.</p>
+      </section>
+      </div>
+    </section>
+      <footer class="site-credit" aria-label="Site credit">Developed by <strong>Ahmed Zaki</strong></footer>
+  </main>
+
+  <dialog id="pair-dialog">
+    <button id="close-dialog" class="close" aria-label="Close">×</button>
+    <h2>Add a device</h2>
+    <p class="muted">Install YourHand on the computer, then enter this one-time code.</p>
+    <div id="pair-code" class="pair-code">—</div>
+    <div id="pair-expiry" class="expiry"></div>
+    <a class="primary download" href="/download/windows">Download for Windows</a>
+    <p class="tiny">The code expires automatically and can be used once.</p>
+  </dialog>
+
+  <dialog id="share-dialog">
+    <button id="close-share-dialog" class="close" aria-label="Close">×</button>
+    <h2 id="share-device-name">Share device</h2>
+    <p class="muted">Keep one Agent installed. Invite another Google account explicitly; no reinstallation needed.</p>
+    <label for="share-email">Invited Google account email</label>
+    <input id="share-email" type="email" maxlength="255" autocomplete="email" placeholder="teammate@example.com" required>
+    <label for="share-role">Permissions</label>
+    <select id="share-role"><option value="operator">Operator: can issue commands</option><option value="viewer">Viewer: can see device details</option></select>
+    <button id="create-share-invite" class="primary" type="button">Create invitation</button>
+    <p id="share-message" class="muted" role="status"></p>
+    <div id="share-invite-result" class="hidden">
+      <p>Send this single-use link privately to the invited account:</p>
+      <input id="share-invite-url" type="text" readonly>
+      <button id="copy-share-invite" class="ghost" type="button">Copy invitation</button>
+    </div>
+    <div id="share-members"></div>
+  </dialog>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="/app.js?v=20260921-device-usage-r10" defer></script>
+  <script src="/voice.js?v=20260921-device-usage-r10" defer></script>
+</body>
+</html>
