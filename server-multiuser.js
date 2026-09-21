@@ -17,6 +17,7 @@ const { ExecutionEngine } = require('./src/execution/engine');
 const { BrowserExecution } = require('./src/execution/browser');
 const { chooseRoute } = require('./src/execution/capability-router');
 const { YourHandOAuth } = require('./src/multiuser/oauth');
+const {pluginToolAnnotations} = require('./src/multiuser/plugin-tool-annotations');
 const { createWebApp } = require('./src/multiuser/web');
 const { WebSocketServer } = require('ws');
 const { McpServer } = require('@modelcontextprotocol/sdk/server/mcp.js');
@@ -408,7 +409,8 @@ function makeMcpServer() {
   // validation errors, cache hits and calls that never reach a device).
   const register=mcp.registerTool.bind(mcp);
   mcp.registerTool=(name,config,callback)=>{
-    return register(name,config,async (...args)=>{
+    const annotatedConfig = {...config, annotations: pluginToolAnnotations(name, config.annotations)};
+    return register(name,annotatedConfig,async (...args)=>{
       const started=performance.now(),usageStartedMs=Date.now(),trace={id:crypto.randomUUID(),attempts:0,methods:new Set()};
       const user=currentUser();
       const rawDevice=args[0]?.device||args[0]?.device_id||null;
