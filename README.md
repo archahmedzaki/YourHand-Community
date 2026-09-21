@@ -9,6 +9,7 @@
 **Open-source Windows device control through a permission-aware MCP server.**
 
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
+[![CI](https://github.com/archahmedzaki/YourHand-OpenSource/actions/workflows/ci.yml/badge.svg)](.github/workflows/ci.yml)
 [![Source preview](https://img.shields.io/badge/release-source%20preview-orange)](docs/PROJECT_STATUS.md)
 
 [Overview](#overview) · [Get started](#get-started) · [Documentation](#documentation) · [Roadmap](docs/ROADMAP.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
@@ -73,7 +74,7 @@ For a **local lab only**, copy `.env.example` to an untracked `.env`, review eac
 | [Privacy and data](docs/PRIVACY_AND_DATA.md) | What operators must protect and disclose |
 | [Compatibility](docs/COMPATIBILITY.md) | Supported source targets and unavailable packaged features |
 | [FAQ](docs/FAQ.md) | Licensing, app-store, installer and donation questions |
-| [Automation and CI](docs/AUTOMATION_AND_CI.md) | Local checks, enabled GitHub secret protection and the inactive [CI template](docs/CI_WORKFLOW_TEMPLATE.yml) |
+| [Automation and CI](docs/AUTOMATION_AND_CI.md) | Active [GitHub Actions checks](.github/workflows/ci.yml), native GitHub secret protection and maintainer review |
 | [Release process](docs/RELEASING.md) | Source and binary release acceptance criteria |
 | [Troubleshooting](docs/TROUBLESHOOTING.md) | Common local development failures |
 | [Roadmap](docs/ROADMAP.md) | Publicly tracked directions, without delivery promises |

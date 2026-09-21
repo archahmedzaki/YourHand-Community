@@ -1,29 +1,19 @@
 # Continuous checks and automation
 
-**CI status: NOT ACTIVE.** The [public workflow template](CI_WORKFLOW_TEMPLATE.yml) has been prepared and its local secret-scanning gate tested, but GitHub rejected the workflow-file upload through the currently authorized credential. The same credential does not have GitHub's `workflow` permission. The template is documentation only: GitHub Actions does not execute a YAML file placed in `docs/`. Until the owner grants the necessary workflow permission or publishes the file through an authorized GitHub browser session, run checks manually on an isolated checkout. The workflow requires no production credentials, deployments or customer-device access.
+**Status: GitHub Actions CI is active.** The authoritative workflow is [`.github/workflows/ci.yml`](../.github/workflows/ci.yml). It runs on pushes and pull requests to `main`, with read-only repository permissions and no production deployment credentials. The two CI jobs **both passed** on 2026-09-21 at public commit `708c97d`: [verified workflow run](https://github.com/archahmedzaki/YourHand-OpenSource/actions/runs/35642603880).
 
-## Checks
+## Checks on each change
 
-A fresh public checkout was independently tested on 2026-09-21 in an isolated Windows lab: cached `npm ci`, `npm test`, `npm run test:source`, `npm run test:privacy`, native helper compilation and `npm run test:native` passed. These manually run checks are **not** GitHub Actions runs. npm vulnerability-audit retrieval timed out; do not infer third-party packages are vulnerability-free.
+- **Node 24 / source and privacy:** clean checkout, `npm ci --ignore-scripts`, `npm test`, `npm run test:source` and `npm run test:privacy`. Includes isolated authorization, privacy and documentation-link checks. No customer devices are accessed.
+- **Independent source secret scan:** `detect-secrets==1.5.0` scans **Git-tracked project files** (`detect-secrets scan --no-verify`), then `scripts/check_secret_scan.py` rejects any findings other than exact, previously reviewed synthetic/static fixtures. Do not run the scanner against `.git`: internal commit hashes are not secrets but may trigger high-entropy heuristics.
+- **Native GitHub security settings:** Secret Scanning, Push Protection and Dependabot security updates are enabled independently of CI. These features complement the project-specific tests.
 
-- Node.js 24, `npm ci`, and the source's isolated `npm test` suite.
-- `npm run test:source`: source syntax, self-contained relative imports, native-helper source-path fixture and Markdown local links.
-- `npm run test:privacy`: known private filenames/device identifiers and common embedded-key patterns in the checkout.
-- GitHub Secret Scanning, Push Protection and Dependabot security updates are **enabled** for this public repository (verified through repository settings); those security features are separate from the inactive CI template.
-- The independent `detect-secrets` 1.5.0 scan and `scripts/check_secret_scan.py` check are included in the [workflow template](CI_WORKFLOW_TEMPLATE.yml). Only exact reviewed synthetic test fixtures are allowlisted; unfamiliar findings fail the check. This CI layer will not run on GitHub until activated.
+A fresh public checkout was also independently tested on 2026-09-21 in an isolated Windows lab: cached `npm ci`, unit/source/privacy tests, native helper compilation and `npm run test:native` passed. The Windows native-helper test is **not included in the Ubuntu CI jobs** and is **not** full real-desktop, UAC, onboarding or production installation acceptance.
 
-**Passing these checks does not mean production approved:** it does not sign a Windows installer, perform customer enrollment, validate marketplace approval or exercise real desktop/UAC behavior on a disposable Windows machine. See [Project status](PROJECT_STATUS.md).
+## Maintainer controls
 
-## Activating the prepared GitHub Actions workflow
+Review all changes and enforce successful CI checks before merging contributions. Confirm any GitHub branch-protection or ruleset requirements from the actual repository settings; this document does not activate them. External code contributions are **not accepted for merge** until the [non-exclusive CLA](../CONTRIBUTOR_LICENSE_AGREEMENT.md) is legally finalized, signed by the proper rights holder and verified. A PR checkbox or DCO sign-off cannot substitute for this separate commercial sublicensing permission. See [CLA FAQ](CLA_FAQ.md).
 
-Use a GitHub session authorized as this repository's owner, or authorize a credential with the GitHub `workflow` scope **in addition to** the appropriate repository-write permission. Copy the content of [docs/CI_WORKFLOW_TEMPLATE.yml](CI_WORKFLOW_TEMPLATE.yml) into **`.github/workflows/ci.yml`** on `main`, commit it, then open the repository's Actions tab to verify that both the unit/privacy and independent secret-pattern jobs pass. Only after that, configure the desired main-branch rules to require successful checks. The source-preview repository must remain independently separate from the private production Git history. **Never paste access tokens in issues or chat.**
+## Security limitations
 
-## Maintainer protection
-
-Before merging into `main`, require passing checks and a reviewed PR. The workflow cannot enforce these checks until separately published by a credential with GitHub workflow-management permission; run them manually in the meantime. If branch protection/rulesets are unavailable for the account, the maintainer must enforce the same steps manually; writing a policy in this file does not itself activate GitHub branch protection.
-
-A finalized, verifiably signed contributor agreement is an **additional human-reviewed gate** for external code contributions. A CI checkbox or PR body is not a binding signature. See [CLA FAQ](CLA_FAQ.md).
-
-## Secret handling
-
-No secrets are needed for normal CI. Never configure a production server token as a GitHub Actions secret merely to run tests. A leak must be revoked/rotated and assessed across all public history; a later deletion does not withdraw already-published credentials.
+CI does not authorize access to the official hosted Core, customer devices or live databases, does not sign Windows installers, and does not establish production readiness. Do not add hosted deployment keys to the public workflow merely to make tests pass. The first CI run failed because scanning all files included an internal Git metadata file; the tracked-files-only scan was corrected and the following run passed. An npm vulnerability audit could not be independently completed in the Windows lab because the package-audit request timed out, so dependency vulnerabilities are **not certified absent**. See [Project status](PROJECT_STATUS.md), [Threat model](THREAT_MODEL.md) and [Release process](RELEASING.md).

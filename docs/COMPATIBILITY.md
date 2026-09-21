@@ -9,7 +9,7 @@ This is a **source-preview matrix**, not a promise that every tool works on ever
 | MCP HTTP gateway source | Included, unverified public deployment | Client tool availability and final per-tool approval are client-dependent |
 | Windows Agent source | Included, standalone enrollment not packaged | Requires authorized device pairing and a separately built distribution |
 | Windows native UI helper | Source and build script included | Windows .NET Framework/UIAutomation prerequisites, independent GUI lab test |
-| GitHub Actions CI | Prepared, not yet published | Workflow upload needs explicitly authorized GitHub workflow permission; run source/unit/privacy tests manually until activated |
+| GitHub Actions CI | Active; both source/privacy and independent secret-scan jobs passed | [Workflow](../.github/workflows/ci.yml) runs on pushes and pull requests to `main`; real Windows GUI and installer acceptance are separate |
 | macOS/Linux device Agent | Not published as a supported Agent here | Core CI on Linux does not imply Linux desktop support |
 | Signed Windows installer | Not included | Requires reproducible build, provenance and actual device acceptance |
 | Hosted YourHand service | Separate from this repository | Public source is not proof of hosted version or entitlement |
