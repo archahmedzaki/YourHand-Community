@@ -16,6 +16,10 @@
 
 The repository's `npm test` suite exercises isolated usage separation, approval gates, capability routing and privacy-safe telemetry. `npm run test:privacy` checks known private-file and credential patterns in the **working directory**. The [GitHub Actions workflow](../.github/workflows/ci.yml) is **active** and completed successfully on the public source at commit `708c97d` on 2026-09-21. Its two jobs run Node/source/privacy tests and an independent secret-pattern scan on tracked source files. GitHub's native Secret Scanning, Push Protection and Dependabot security updates are enabled separately and complement, rather than replace, the CI jobs. Test results are not evidence of complete Windows hardware, browser, billing, production OAuth or real-customer acceptance testing.
 
+## Independently executed isolated Core/Agent lab
+
+A separately cloned public source snapshot at commit `494b7bf` completed **18/18 defined isolated loopback lab checks** on 2026-09-21, including a fresh native helper build, synthetic account sessions, device pairing, actual Agent Ed25519 WebSocket authentication, read-only command-channel ping, cross-account access denial and revocation. One check explicitly confirmed that the installer endpoint returns **HTTP 503** while its required package is absent; this is an expected negative check, not an installed app. Real Google OAuth and a complete Windows installer run were **not** tested. See [evidence and blockers](COMMUNITY_LAB_E2E_REPORT.md).
+
 ## Not yet delivered or independently verified
 
 - A supported, signed Windows installer or pre-enrolled Agent bundle. Built EXE/ZIP artifacts are **not** in the public repository.
@@ -24,7 +28,7 @@ The repository's `npm test` suite exercises isolated usage separation, approval 
 - Full real-device compatibility and Windows UAC/Winlogon integration testing on the final build.
 - Formal penetration testing, third-party dependency legal audit, public SLA or guaranteed error-free operation.
 - Public OpenAI directory approval, unlimited ChatGPT usage, or paid subscriptions as part of this repository.
-- A legally finalized, signed contributor agreement and active third-party PR intake.
+- A legally finalized, signed contributor agreement and active third-party PR intake. The individual [revised draft](../CONTRIBUTOR_LICENSE_AGREEMENT.md), [corporate draft](CLA_CORPORATE_DRAFT.md) and [counsel review packet](CLA_COUNSEL_REVIEW.md) are prepared, but **no qualified counsel has approved them or authenticated external signers**.
 
 ## Release criteria
 

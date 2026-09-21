@@ -66,6 +66,8 @@ For a **local lab only**, copy `.env.example` to an untracked `.env`, review eac
 | Guide | Contents |
 |---|---|
 | [Project status](docs/PROJECT_STATUS.md) | Implemented source, verified tests, release blockers |
+| [Isolated Community E2E lab](docs/COMMUNITY_LAB_E2E_REPORT.md) | Source-to-Agent pairing and read-only command test, exact remaining installer blockers |
+| [CLA legal review](docs/CLA_COUNSEL_REVIEW.md) | Individual/corporate rights-holder drafts, legal questions and signing safeguards |
 | [Development setup](docs/DEVELOPMENT_SETUP.md) | Local-only setup, source build, testing and cleanup |
 | [Architecture](docs/ARCHITECTURE.md) | Components, identity, flow and deployment boundaries |
 | [Configuration](docs/CONFIGURATION.md) | Environment variables and secrets handling |
@@ -87,7 +89,7 @@ For a **local lab only**, copy `.env.example` to an untracked `.env`, review eac
 
 The community source is distributed under **GNU AGPL-3.0-only**; see [LICENSE](LICENSE). Its copyright license permits commercial use under its terms. The official hosted service is a separate offering. Any distinct proprietary edition may use only source for which the maintainer holds appropriate independent licensing rights.
 
-**Contributors retain ownership.** Before external contributions can be merged into this project, the maintainer must finalize a *non-exclusive contributor license agreement* that separately grants the rights needed for community and proprietary/commercial distribution. The [current CLA is a draft, not active or signable](CONTRIBUTOR_LICENSE_AGREEMENT.md). See [licensing policy](docs/LICENSING_POLICY.md). Third-party licenses and contributor rights remain in force.
+**Contributors retain ownership.** Before external contributions can be merged into this project, the maintainer must finalize a *non-exclusive contributor license agreement* that separately grants the rights needed for community and proprietary/commercial distribution. The [current CLA is a draft, not active or signable](CONTRIBUTOR_LICENSE_AGREEMENT.md). See [licensing policy](docs/LICENSING_POLICY.md), [legal review packet](docs/CLA_COUNSEL_REVIEW.md) and [signing activation plan](docs/CLA_SIGNING_SETUP.md). Third-party licenses and contributor rights remain in force.
 
 ## Community and safety
 
