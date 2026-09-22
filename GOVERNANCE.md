@@ -6,7 +6,7 @@
 
 The maintainer sets project scope and release readiness, decides whether issues and pull requests are accepted, reviews code and documentation, and appoints future maintainers if necessary. Discussion is welcome; publishing a feature request, donation or pull request does not guarantee acceptance or a release date.
 
-Contributions must pass privacy/security/license review and a valid rights-holder agreement **before merge**. The maintainer has adopted [individual CLA v1.0](CONTRIBUTOR_LICENSE_AGREEMENT.md) without separate attorney certification; the external signing service and PR check are **not yet active or verified**, and corporate-owned material needs additional authorized corporate permission. External code merge intake stays closed until signing/check enforcement is proven. See [CONTRIBUTING.md](CONTRIBUTING.md).
+Contributions must pass privacy/security/license review and a valid rights-holder agreement **before merge**. The maintainer has adopted [individual CLA v1.1](CONTRIBUTOR_LICENSE_AGREEMENT.md) without separate attorney certification; the external signing service and PR check are **not yet active or verified**, and corporate-owned material needs additional authorized corporate permission. External code merge intake stays closed until signing/check enforcement is proven. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Branches and releases
 

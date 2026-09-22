@@ -1,4 +1,4 @@
-# YourHand Community — Individual Contributor License Agreement (version 1.0)
+# YourHand Community — Individual Contributor License Agreement (version 1.1)
 
 **Rights recipient:** Ahmed Zaki, acting as an individual project maintainer ("Maintainer"). **Contributor:** the natural person who affirmatively accepts this agreement through the designated contributor-signing service ("You"). **Project:** the official open-source YourHand-Community repository at https://github.com/archahmedzaki/YourHand-Community and the Maintainer's separately licensed YourHand editions.
 
@@ -30,7 +30,7 @@ This agreement does not take away third parties' rights, supersede incompatible 
 
 ## 5. Signature, evidence and changes
 
-You accept these terms only by **affirmatively selecting the agreement acceptance/signing action** in the designated CLA service while authenticated to Your GitHub account. Opening a pull request, merely viewing this file, reacting to a comment, or checking an unrelated PR-template box alone does **not** constitute acceptance of this agreement. The service may record Your GitHub identity, agreement version, time of acceptance and related PR metadata according to its disclosed privacy notice. If You do not wish to consent to that processing, do not use the signing service; contact the Maintainer to discuss an alternative private written agreement before contributing.
+You accept these terms only by **personally posting the exact, versioned acceptance statement expressly provided in the Project's contributor instructions as a comment on Your pull request**, while signed in to Your own GitHub account. The statement identifies this agreement's version, public document URL and SHA-256 and expressly affirms Your rights to license the work. The Project's GitHub Actions consent checker verifies the authenticated comment author, exact statement, document hash, PR and commit; this does not independently verify Your legal identity or ownership of employer or co-author rights. Opening a pull request, merely viewing this file, reacting to a comment, or checking an unrelated PR-template box alone does **not** constitute acceptance. The acceptance statement and Your GitHub username, comment timestamp, version and PR metadata are publicly visible on GitHub. If You do not wish to leave that public acceptance record, **do not post the statement**; contact the Maintainer before contributing to discuss a private, separately signed agreement.
 
 Material changes to this version require Your separate affirmative acceptance for later Contributions; the Maintainer will not change the signed version retroactively. The Maintainer may request separate documentation of legal identity, corporate authority or rights provenance **privately** before accepting a Contribution. Do not upload signatures, national IDs, client files or private employment documents into public issues.
 
@@ -38,4 +38,4 @@ Material changes to this version require Your separate affirmative acceptance fo
 
 You are not required to maintain or support Your Contributions unless separately agreed. Subject to applicable mandatory law, Contributions are provided as-is, without an independent warranty of error-free operation or fitness for a particular purpose. Nothing here waives rights that applicable law makes non-waivable, and this agreement does not promise that online acknowledgment meets every jurisdiction's qualified digital-signature requirements.
 
-**Version:** 1.0 — The authoritative text for any particular signature is the immutable signed-service agreement revision/hash shown at the time of acceptance. The Maintainer must preserve that exact version and the corresponding acceptance evidence privately.
+**Version:** 1.1 — The authoritative text is the immutable SHA-256-identified public Gist revision named in the exact acceptance statement. The GitHub PR comment and its author/timestamp are public evidence of assent; the Maintainer must keep any separate identity, employer-authorization or corporate-signature evidence private.
