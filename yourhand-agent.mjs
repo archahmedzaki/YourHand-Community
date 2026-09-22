@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 import WebSocket from 'ws';
 import { FileActionJournal } from './yh-action-journal.mjs';
 import { resolveYourHandNativeHelper } from './src/multiuser/native-helper-path.mjs';
+import { isAllowedEnrollmentUrl } from './src/multiuser/enrollment-url.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const VERSION = '0.9.4-approval-wait';
@@ -32,7 +33,7 @@ async function loadOrEnrollConfig(){
   const boot=JSON.parse(fs.readFileSync(BOOTSTRAP_FILE,'utf8'));
   const token=String(boot.pairingToken||'').trim();
   const enrollUrl=String(boot.enrollUrl||'').trim();
-  if(!token||!/^https:\/\//i.test(enrollUrl))throw new Error('Invalid YourHand bootstrap configuration');
+  if(!token || !isAllowedEnrollmentUrl(enrollUrl))throw new Error('Invalid YourHand bootstrap configuration');
   const {privateKeyFile,publicKeyFile}=ensureDeviceKeys();
   const publicKey=fs.readFileSync(publicKeyFile,'utf8');
   const r=await fetch(enrollUrl,{
