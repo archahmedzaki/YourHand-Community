@@ -24,6 +24,10 @@ A separately cloned public source snapshot at commit `494b7bf` completed **18/18
 
 The public Community source now uses a separate **`%LOCALAPPDATA%/YourHandCommunity`** root and distinct startup/uninstall registry entries in its installer and Windows manager, rather than the official client's original paths. Its default Core database and optional environment file are also source-local, with no default read from the official Core's private paths. The GUI manager takes the Community dashboard origin from the generated setup configuration rather than the official hosted site. Source-level isolation tests and an unsigned Windows compilation test passed. **A clean installation, real Google OAuth, agent GUI control, safe rollback and uninstall have NOT been independently performed on a disposable Windows VM**, and there is no signed public installer release.
 
+## Independent Windows installation and uninstall test (2026-09-22)
+
+A separate Windows 10 Pro workstation with an existing official YourHand Agent successfully installed and paired a test Community Agent against a local loopback Core with synthetic users. **19/19 scoped installer/connection checks and 16/16 uninstall/cleanup checks passed**, including original Agent/key immutability. The initial public source needed a narrowly scoped localhost-only HTTP enrollment fix to allow this local flow. Real Google OAuth, a signed distributable and production UI/UAC tests remain outstanding. See [installation lab evidence](COMMUNITY_WINDOWS_INSTALL_LAB_20260922.md).
+
 ## Not yet delivered or independently verified
 
 - A supported, signed Windows installer or pre-enrolled Agent bundle. Built EXE/ZIP artifacts are **not** in the public repository.
