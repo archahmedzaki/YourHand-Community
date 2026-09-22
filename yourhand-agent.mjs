@@ -45,7 +45,7 @@ async function loadOrEnrollConfig(){
   const cfg={
     deviceId:body.deviceId,
     displayName:body.displayName||os.hostname(),
-    serverUrl:body.serverUrl||boot.serverUrl||'wss://yourhand.wolvexai.com/agent',
+    serverUrl:body.serverUrl||boot.serverUrl||'',
     privateKeyFile,
     publicKeyFile,
     nativeHelper:path.join(__dirname,'YourHandNative.exe'),

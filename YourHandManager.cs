@@ -10,13 +10,24 @@ using Microsoft.Win32;
 using System.Security.Cryptography;
 using System.Web.Script.Serialization;
 class YourHandManager : Form {
- static readonly string Root=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"YourHand");
+ static readonly string Root=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"YourHandCommunity");
  static readonly string Installed=Path.Combine(Root,"YourHandManager.exe");
- static readonly string AppKey=@"Software\Microsoft\Windows\CurrentVersion\Uninstall\YourHand";
+ static readonly string AppKey=@"Software\Microsoft\Windows\CurrentVersion\Uninstall\YourHandCommunity";
  static readonly string RunKey=@"Software\Microsoft\Windows\CurrentVersion\Run";
- static readonly string Shortcut=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Programs),"YourHand Device Manager.lnk");
+ static readonly string Shortcut=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Programs),"YourHand Community Device Manager.lnk");
  static readonly string ShortcutMarker=Path.Combine(Root,".manager-shortcut-created");
- const string Dashboard="https://yourhand.wolvexai.com/";
+ static string Dashboard {
+   get {
+     try {
+       string config=Path.Combine(Root,"community-dashboard-url.txt");
+       Uri origin=new Uri(File.ReadAllText(config).Trim(),UriKind.Absolute);
+       if(origin.Scheme==Uri.UriSchemeHttps ||
+         (origin.Scheme==Uri.UriSchemeHttp && (origin.Host=="127.0.0.1" || origin.Host=="localhost")))
+         return origin.GetLeftPart(UriPartial.Authority).TrimEnd('/')+"/";
+     } catch {}
+     return "http://127.0.0.1:8790/";
+   }
+ }
  Label status,service,device,accounts,note;
  Button start,stop;
  NotifyIcon tray;
@@ -35,8 +46,8 @@ class YourHandManager : Form {
  }
  static void Register(){
   using(var key=Registry.CurrentUser.CreateSubKey(AppKey)){
-   key.SetValue("DisplayName","YourHand",RegistryValueKind.String);
-   key.SetValue("Publisher","YourHand",RegistryValueKind.String);
+   key.SetValue("DisplayName","YourHandCommunity",RegistryValueKind.String);
+   key.SetValue("Publisher","YourHandCommunity",RegistryValueKind.String);
    key.SetValue("DisplayVersion","0.9.1",RegistryValueKind.String);
    key.SetValue("InstallLocation",Root,RegistryValueKind.String);
    key.SetValue("DisplayIcon",Installed,RegistryValueKind.String);
@@ -44,7 +55,7 @@ class YourHandManager : Form {
    key.SetValue("NoModify",1,RegistryValueKind.DWord);
    key.SetValue("NoRepair",1,RegistryValueKind.DWord);
   }
-  using(var key=Registry.CurrentUser.CreateSubKey(RunKey))key.SetValue("YourHandManager","\""+Installed+"\" /tray",RegistryValueKind.String);
+  using(var key=Registry.CurrentUser.CreateSubKey(RunKey))key.SetValue("YourHandCommunityManager","\""+Installed+"\" /tray",RegistryValueKind.String);
   try{
    if(!File.Exists(Shortcut)){
     Type t=Type.GetTypeFromProgID("WScript.Shell");
@@ -54,7 +65,7 @@ class YourHandManager : Form {
     link.GetType().InvokeMember("WorkingDirectory",System.Reflection.BindingFlags.SetProperty,null,link,new object[]{Root});
     link.GetType().InvokeMember("Description",System.Reflection.BindingFlags.SetProperty,null,link,new object[]{"YourHand Device Manager"});
     link.GetType().InvokeMember("Save",System.Reflection.BindingFlags.InvokeMethod,null,link,new object[]{});
-    File.WriteAllText(ShortcutMarker,"YourHand");
+    File.WriteAllText(ShortcutMarker,"YourHandCommunity");
    }
   }catch{}
 
@@ -76,7 +87,7 @@ class YourHandManager : Form {
   foreach(var proc in Agents())try{proc.Kill();proc.WaitForExit(4500);}catch{}finally{proc.Dispose();}
   using(var run=Registry.CurrentUser.OpenSubKey(RunKey,true)){
    if(run!=null){
-    foreach(string name in new[]{"YourHandManager","YourHand"}){
+    foreach(string name in new[]{"YourHandCommunityManager","YourHandCommunity"}){
      var val=Convert.ToString(run.GetValue(name,""));
      if(val.IndexOf(Root,StringComparison.OrdinalIgnoreCase)>=0)run.DeleteValue(name,false);
     }
@@ -85,13 +96,13 @@ class YourHandManager : Form {
   Registry.CurrentUser.DeleteSubKeyTree(AppKey,false);
   try{if(File.Exists(ShortcutMarker)&&File.Exists(Shortcut))File.Delete(Shortcut);}catch{}
 
-  string helper=Path.Combine(Path.GetTempPath(),"YourHandUninstall-"+Guid.NewGuid().ToString("N")+".exe");
+  string helper=Path.Combine(Path.GetTempPath(),"YourHandCommunityUninstall-"+Guid.NewGuid().ToString("N")+".exe");
   File.Copy(Application.ExecutablePath,helper);
   Process.Start(new ProcessStartInfo(helper,"/finish-uninstall "+Process.GetCurrentProcess().Id){UseShellExecute=false,CreateNoWindow=true});
  }
  static void FinishUninstall(int parent){
   try{Process.GetProcessById(parent).WaitForExit(12000);}catch{}
-  if(Same(Root,Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"YourHand")) && Directory.Exists(Root)){
+  if(Same(Root,Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"YourHandCommunity")) && Directory.Exists(Root)){
    for(int attempt=0;attempt<18;attempt++){
     try{
      if((new DirectoryInfo(Root).Attributes&FileAttributes.ReparsePoint)!=0)break;
@@ -106,8 +117,8 @@ class YourHandManager : Form {
    if(args.Length>0 && args[0]=="/finish-uninstall"){int n;if(args.Length>1&&int.TryParse(args[1],out n))FinishUninstall(n);return;}
    if(args.Length>0 && args[0]=="/uninstall"){Uninstall();return;}
    if(!Same(Application.ExecutablePath,Installed)){Install();return;}
-   bool created;using(var mutex=new Mutex(true,@"Local\YourHandManagerUI",out created)){
-    if(!created){if(args.Length==0||args[0]!="/tray")MessageBox.Show("YourHand is already running. Open it from the icon near the Windows clock.","YourHand");return;}
+   bool created;using(var mutex=new Mutex(true,@"Local\YourHandCommunityManagerUI",out created)){
+    if(!created){if(args.Length==0||args[0]!="/tray")MessageBox.Show("YourHand is already running. Open it from the icon near the Windows clock.","YourHandCommunity");return;}
     Register();Application.Run(new YourHandManager(args.Length>0 && args[0]=="/tray"));
    }
   }catch(Exception e){MessageBox.Show(e.Message,"YourHand Manager",MessageBoxButtons.OK,MessageBoxIcon.Error);}
@@ -117,7 +128,7 @@ class YourHandManager : Form {
   StartPosition=FormStartPosition.CenterScreen;BackColor=Color.FromArgb(12,22,37);ForeColor=Color.FromArgb(232,245,255);
   Font=new Font("Segoe UI",10);
   FormBorderStyle=FormBorderStyle.FixedDialog;MaximizeBox=false;
-  var heading=new Label(){Text="YourHand",Font=new Font("Segoe UI",22,FontStyle.Bold),Left=22,Top=14,Width=380,Height=50,ForeColor=Color.FromArgb(102,214,250)};
+  var heading=new Label(){Text="YourHandCommunity",Font=new Font("Segoe UI",22,FontStyle.Bold),Left=22,Top=14,Width=380,Height=50,ForeColor=Color.FromArgb(102,214,250)};
   Controls.Add(heading);
   status=MakeLabel("Agent: checking",70);service=MakeLabel("YourHand service: checking",104);
   device=MakeLabel("Device ID: checking",138);accounts=MakeLabel("Accounts: use Dashboard > Share to invite other Google users to THIS Device ID.",172);

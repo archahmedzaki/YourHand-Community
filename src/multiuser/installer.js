@@ -19,7 +19,7 @@ function buildWindowsInstaller({ token, baseUrl, bundleSha256, agentUrl }) {
     const managerPath = path.join(__dirname,'../../web/YourHand-Manager-Install.exe');
     if(!fs.existsSync(managerPath))throw new Error('Windows GUI manager not bundled');
     const managerSha256=crypto.createHash('sha256').update(fs.readFileSync(managerPath)).digest('hex');
-    agentUrl = agentUrl || ('wss://' + new URL(rootUrl).host + '/agent');
+    agentUrl = agentUrl || ((new URL(rootUrl).protocol === 'https:' ? 'wss://' : 'ws://') + new URL(rootUrl).host + '/agent');
     const code = `using System;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -104,7 +104,7 @@ class YourHandSetup {
     var created=new List<string>();var backed=new List<string>();
     try {
       ServicePointManager.SecurityProtocol=(SecurityProtocolType)3072;
-      string root=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"YourHand");
+      string root=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"YourHandCommunity");
       Directory.CreateDirectory(root);
       // A single active Agent belongs to the PC, not the account downloading Setup.
       // Never overwrite a running executable/agent or replace its paired device identity.
@@ -130,12 +130,15 @@ class YourHandSetup {
       runtimeChanged=true; // Rollback even after a partial copy failure.
       CopyTree(temp,root,backup,created,backed);
       string bootstrap="{\\\"pairingToken\\\":\\\"${csString(token)}\\\",\\\"enrollUrl\\\":\\\"${csString(enrollUrl)}\\\",\\\"serverUrl\\\":\\\"${csString(agentUrl)}\\\",\\\"disableDesktopCommander\\\":true}";
-      // Existing device identity survives repair/update; only new installs need enrollment.
+      // Community installs carry their own Core origin; never default to the official dashboard.
+      string communityDashboard=Path.Combine(root,"community-dashboard-url.txt");
+      if(!File.Exists(communityDashboard))File.WriteAllText(communityDashboard,"${csString(rootUrl + '/')}");
+      // Existing Community device identity survives repair/update; only new installs need enrollment.
       if(!File.Exists(Path.Combine(root,"yourhand-config.json")))File.WriteAllText(Path.Combine(root,"yourhand-bootstrap.json"),bootstrap);
       string node=Path.Combine(root,"node.exe");
       string agent=Path.Combine(root,"yourhand-agent.mjs");
       string command="\\\""+node+"\\\" \\\""+agent+"\\\"";
-      using(var key=Registry.CurrentUser.CreateSubKey(@"Software\\Microsoft\\Windows\\CurrentVersion\\Run")) key.SetValue("YourHand",command,RegistryValueKind.String);
+      using(var key=Registry.CurrentUser.CreateSubKey(@"Software\\Microsoft\\Windows\\CurrentVersion\\Run")) key.SetValue("YourHandCommunity",command,RegistryValueKind.String);
       var psi=new ProcessStartInfo(node,"\\\""+agent+"\\\"") { UseShellExecute=false,CreateNoWindow=true,WorkingDirectory=root,WindowStyle=ProcessWindowStyle.Hidden };
       Process.Start(psi);
       agentStarted=true;
@@ -154,9 +157,9 @@ class YourHandSetup {
       return 0;
     } catch(Exception ex) {
       string notice=ex.Message;
-      if(runtimeChanged && !IsAgentRunning(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"YourHand"))){
+      if(runtimeChanged && !IsAgentRunning(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"YourHandCommunity"))){
         try{
-          RollbackRuntime(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"YourHand"),
+          RollbackRuntime(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"YourHandCommunity"),
             backup,created,backed);
           rollbackSucceeded=true;notice+="\\nPrevious runtime files restored. Existing device configuration was not replaced.";
         }catch(Exception restoreError){
@@ -170,7 +173,7 @@ class YourHandSetup {
       try{if(temp!=null&&Directory.Exists(temp))Directory.Delete(temp,true);}catch{}
       // Never delete the backup when rollback failed; it is the only local
       // recovery copy. Successful installs or successful rollback may clean it.
-      if(!runtimeChanged||rollbackSucceeded||(agentStarted&&IsAgentRunning(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"YourHand")))){
+      if(!runtimeChanged||rollbackSucceeded||(agentStarted&&IsAgentRunning(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"YourHandCommunity")))){
         try{if(backup!=null&&Directory.Exists(backup))Directory.Delete(backup,true);}catch{}
       }
     }

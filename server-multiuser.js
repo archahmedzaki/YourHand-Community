@@ -1,5 +1,5 @@
-require('dotenv').config();
-require('dotenv').config({ path: process.env.YOURHAND_ENV_FILE || 'C:/ProgramData/YourHand/yourhand.env', override: false });
+require('dotenv').config({ path: require('path').join(__dirname, '.env') });
+if (process.env.YOURHAND_ENV_FILE) require('dotenv').config({ path: process.env.YOURHAND_ENV_FILE, override: false });
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -29,7 +29,7 @@ const PRODUCT_NAME = 'YourHand';
 const AGENT_PORT = Number(process.env.YOURHAND_AGENT_PORT || 8791);
 const MCP_PORT = Number(process.env.YOURHAND_MCP_PORT || 8792);
 const WEB_PORT = Number(process.env.YOURHAND_WEB_PORT || 8790);
-const DB_FILE = process.env.YOURHAND_DB_FILE || 'C:/ProgramData/YourHand/yourhand.db';
+const DB_FILE = process.env.YOURHAND_DB_FILE || path.join(__dirname, 'runtime', 'yourhand-community.db');
 const BASE_URL = process.env.YOURHAND_BASE_URL || `http://127.0.0.1:${WEB_PORT}`;
 const MCP_PUBLIC_URL = process.env.YOURHAND_MCP_PUBLIC_URL || `${BASE_URL.replace(/\/$/,'')}/mcp`;
 const WEB_DIR = path.join(__dirname, 'web');
@@ -69,7 +69,7 @@ const LEGACY_PUBLIC_KEY_DIR = process.env.YOURHAND_LEGACY_PUBLIC_KEY_DIR || './r
 const LEGACY_MCP_AUTH_MESSAGE = 'yourhand-mcp-owner-v1';
 let LEGACY_WEB_MCP_PATH = null;
 try {
-  const candidate = fs.readFileSync('C:/ProgramData/YourHand/web-path.txt', 'utf8').trim();
+  const candidate = String(process.env.YOURHAND_LEGACY_WEB_MCP_PATH || '').trim();
   if (/^\/yh-web-[A-Za-z0-9_-]{20,}$/.test(candidate)) LEGACY_WEB_MCP_PATH = candidate;
 } catch {}
 

@@ -4,6 +4,9 @@ Notable changes to the community repository will be recorded here. This log is f
 
 ## Unreleased
 
+- Separated the Community installer/manager directory, registry entries and dashboard origin from the original YourHand desktop client. Community Core now defaults to its own database and local environment rather than reading private operational paths. Added a source isolation regression check.
+- Independent lab generated a 3,687-file **unsigned** Agent ZIP with integrity verification and passed 6/6 HTTP package and Setup download checks; this is **not** a completed installed-client end-to-end test.
+
 - Prepared expanded individual and corporate non-exclusive CLA drafts and a qualified-counsel review/signing plan; **signature acceptance is not active** and commercial re-licensing rights in outside work are not assumed.
 - Recorded independent disposable loopback lab results: 18/18 source/identity/device protocol checks passed (including expected HTTP 503 on the absent installer), while real Google OAuth and full separate Windows installation remain untested.
 
