@@ -1,6 +1,6 @@
 # Contributor CLA and commercial licensing — current status
 
-The maintainer adopted the [individual non-exclusive CLA v1.1](../CONTRIBUTOR_LICENSE_AGREEMENT.md), also published as a [versioned public Gist](https://gist.github.com/archahmedzaki/e2b383e438726b5b157bd5451c0171ba). **The hosted CLA Assistant dashboard has not been linked because it requested account-wide OAuth. The repository-scoped GitHub PR-comment assent gate is being activated and is not yet independently validated on both unsigned and signed contributor PRs. External code PRs remain on hold for merge until that work is completed.** The CLA has not received independent professional legal certification.
+The maintainer adopted the [individual non-exclusive CLA v1.1](../CONTRIBUTOR_LICENSE_AGREEMENT.md), also published as a [versioned public Gist](https://gist.github.com/archahmedzaki/e2b383e438726b5b157bd5451c0171ba). **The hosted CLA Assistant dashboard has not been linked because it requested account-wide OAuth. The repository-scoped GitHub PR-comment assent gate is now active and required on protected `main`: the [unsigned test PR #10](https://github.com/archahmedzaki/YourHand-Community/pull/10) failed as expected. The real signed-contributor PR path remains to be verified. External code PRs remain on hold for merge until that work is completed.** The CLA has not received independent professional legal certification.
 
 ## Does a contributor lose copyright?
 

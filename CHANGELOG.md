@@ -4,6 +4,8 @@ Notable changes to the community repository will be recorded here. This log is f
 
 ## Unreleased
 
+- Activated the repository-scoped [CLA v1.1 consent workflow](.github/workflows/cla.yml) on the public repository with only issues/PR read and commit-status write permissions; verified unsigned public PR #10 failed and made its exact consent status a required `main` check alongside both CI jobs and code-owner review. A real signed-contributor acceptance test remains outstanding; do not merge external work until verified.
+
 - Owner adopted individual non-exclusive Contributor License Agreement v1.0 with express separate commercial/proprietary sublicensing permission; published its versioned SHA-256-identified text as a public GitHub Gist. No independent lawyer certified its enforceability. External GitHub CLA Assistant OAuth authorization, repository linkage and signed/unsigned PR enforcement are pending; corporate form remains a draft.
 
 - Separated the Community installer/manager directory, registry entries and dashboard origin from the original YourHand desktop client. Community Core now defaults to its own database and local environment rather than reading private operational paths. Added a source isolation regression check.

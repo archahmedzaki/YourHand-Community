@@ -98,7 +98,7 @@ async function run(env=process.env) {
   if(pr.state!=='open'){console.log('PR is not open; no status change');return;}
   const sha=pr.head?.sha;
   if(!/^[0-9a-f]{40}$/i.test(sha||''))throw new Error('Invalid PR head SHA');
-  let state='failure',description='CLA v1 consent not found: read agreement and post exact acceptance comment';
+  let state='failure',description='CLA v1.1 consent missing: PR author must post exact acceptance statement';
   try{
     await verifyExactAgreement(env.GITHUB_TOKEN);
     const comments=await collectComments(REPOSITORY,number,env.GITHUB_TOKEN);
