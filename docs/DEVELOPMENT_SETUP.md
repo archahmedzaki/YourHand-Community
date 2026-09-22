@@ -26,7 +26,7 @@ A successful `npm test` run verifies selected **synthetic checks**; it does not 
 powershell -NoProfile -ExecutionPolicy Bypass -File .\native\build.ps1
 ```
 
-The script compiles `native/YourHandNative.cs` into the locally generated `native/YourHandNative.exe`. The executable is deliberately ignored by Git. A running source-checkout Agent resolves the native helper from this development build path; deployed installations can supply their own explicitly configured path. If the build prerequisites are missing, install the appropriate Windows SDK/.NET components before retrying. **Do not elevate to bypass protected Windows desktops.**
+The script compiles `native/YourHandNative.cs` into the locally generated `native/YourHandNative.exe`. The executable is deliberately ignored by Git. The Community Windows manager and generated Setup must be built from this independent source and should use a separate `%LOCALAPPDATA%/YourHandCommunity` installation root; no compiled customer installer is shipped. A running source-checkout Agent resolves the native helper from this development build path; deployed installations can supply their own explicitly configured path. If the build prerequisites are missing, install the appropriate Windows SDK/.NET components before retrying. **Do not elevate to bypass protected Windows desktops.**
 
 After a successful build, run `npm run test:native` on a **disposable Windows desktop**. This test needs the locally built EXE; it cannot pass on GitHub's ordinary Linux runners.
 

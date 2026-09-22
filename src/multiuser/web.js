@@ -96,7 +96,7 @@ function createWebApp({ store, oauth, baseUrl, googleClientId, webDir, onDeviceR
     next();
   });
 
-  const bundlePath = process.env.YOURHAND_AGENT_BUNDLE || 'C:/ProgramData/YourHand/dist/YourHandAgent.zip';
+  const bundlePath = process.env.YOURHAND_AGENT_BUNDLE || path.join(__dirname, '..', '..', 'dist', 'YourHandAgent.zip');
   let bundleHashCache={mtimeMs:0,hash:''};
   const bundleHash=()=>{
     const st=fs.statSync(bundlePath);

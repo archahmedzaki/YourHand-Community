@@ -20,6 +20,10 @@ The repository's `npm test` suite exercises isolated usage separation, approval 
 
 A separately cloned public source snapshot at commit `494b7bf` completed **18/18 defined isolated loopback lab checks** on 2026-09-21, including a fresh native helper build, synthetic account sessions, device pairing, actual Agent Ed25519 WebSocket authentication, read-only command-channel ping, cross-account access denial and revocation. One check explicitly confirmed that the installer endpoint returns **HTTP 503** while its required package is absent; this is an expected negative check, not an installed app. Real Google OAuth and a complete Windows installer run were **not** tested. See [evidence and blockers](COMMUNITY_LAB_E2E_REPORT.md).
 
+## Community installation isolation (source change under validation)
+
+The public Community source now uses a separate **`%LOCALAPPDATA%/YourHandCommunity`** root and distinct startup/uninstall registry entries in its installer and Windows manager, rather than the official client's original paths. Its default Core database and optional environment file are also source-local, with no default read from the official Core's private paths. The GUI manager takes the Community dashboard origin from the generated setup configuration rather than the official hosted site. Source-level isolation tests and an unsigned Windows compilation test passed. **A clean installation, real Google OAuth, agent GUI control, safe rollback and uninstall have NOT been independently performed on a disposable Windows VM**, and there is no signed public installer release.
+
 ## Not yet delivered or independently verified
 
 - A supported, signed Windows installer or pre-enrolled Agent bundle. Built EXE/ZIP artifacts are **not** in the public repository.
