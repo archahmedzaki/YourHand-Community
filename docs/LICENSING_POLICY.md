@@ -1,6 +1,6 @@
 # YourHand licensing and contribution policy
 
-**Project policy — approval draft, not a substitute for legal review.**
+**Project policy — owner adopted; not an independent legal opinion.**
 The independently published community source tree is distributed under GNU Affero General Public License version 3 only (AGPL-3.0-only). This is the applicable public copyright license, not a noncommercial license and not a prohibition on competitors. Self-hosted copies may be used commercially under the AGPL's terms, and recipients retain all rights granted by the AGPL. The YourHand brand and marks are addressed separately from software copyright.
 
 The maintainer plans dual licensing: an open-source community edition and a separately licensed hosted/proprietary edition. For source authored and owned by the maintainer, copyright ownership permits licensing the same material under more than one license. External contributions will be accepted only after a contributor signs an appropriate non-exclusive Contributor License Agreement (CLA) explicitly granting the maintainer the rights needed to distribute those contributions both under AGPL-3.0-only and under proprietary/commercial terms, without requiring publication of proprietary-only original work.

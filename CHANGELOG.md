@@ -4,6 +4,8 @@ Notable changes to the community repository will be recorded here. This log is f
 
 ## Unreleased
 
+- Owner adopted individual non-exclusive Contributor License Agreement v1.0 with express separate commercial/proprietary sublicensing permission; published its versioned SHA-256-identified text as a public GitHub Gist. No independent lawyer certified its enforceability. External GitHub CLA Assistant OAuth authorization, repository linkage and signed/unsigned PR enforcement are pending; corporate form remains a draft.
+
 - Separated the Community installer/manager directory, registry entries and dashboard origin from the original YourHand desktop client. Community Core now defaults to its own database and local environment rather than reading private operational paths. Added a source isolation regression check.
 - Independent lab generated a 3,687-file **unsigned** Agent ZIP with integrity verification and passed 6/6 HTTP package and Setup download checks; this is **not** a completed installed-client end-to-end test.
 
