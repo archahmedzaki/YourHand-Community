@@ -1,6 +1,6 @@
 # YourHand CLA legal-risk review and owner adoption record
 
-The project owner has adopted [individual CLA version 1.0](../CONTRIBUTOR_LICENSE_AGREEMENT.md) for the planned contributor-signing service without a separate attorney engagement. **This document is a technical/legal-risk checklist, not a legal opinion, lawyer certification, or assurance of enforceability.** The owner can still commission targeted intellectual-property review later without changing the open-source repository's public status.
+The project owner has adopted [individual CLA version 1.1](../CONTRIBUTOR_LICENSE_AGREEMENT.md) for the planned GitHub-authenticated exact-text PR-comment assent process without a separate attorney engagement. **This document is a technical/legal-risk checklist, not a legal opinion, lawyer certification, or assurance of enforceability.** The owner can still commission targeted intellectual-property review later without changing the open-source repository's public status.
 
 The v1 individual CLA expressly addresses non-exclusive copyright, AGPL publication, proprietary/commercial licensing and sublicensing, a narrow contributor-controlled patent grant, and employee/third-party rights. It does not transfer copyright and cannot authorize use of rights a signer does not possess. The [separate corporate form](CLA_CORPORATE_DRAFT.md) remains a draft and cannot replace a verified authorized employer signature. Third-party license provenance remains a separate merge gate.
 

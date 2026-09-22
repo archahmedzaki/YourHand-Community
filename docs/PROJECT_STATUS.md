@@ -32,7 +32,7 @@ The public Community source now uses a separate **`%LOCALAPPDATA%/YourHandCommun
 - Full real-device compatibility and Windows UAC/Winlogon integration testing on the final build.
 - Formal penetration testing, third-party dependency legal audit, public SLA or guaranteed error-free operation.
 - Public OpenAI directory approval, unlimited ChatGPT usage, or paid subscriptions as part of this repository.
-- An active and tested third-party CLA signing/check workflow. The owner has adopted an [individual non-exclusive CLA v1.0](../CONTRIBUTOR_LICENSE_AGREEMENT.md) and published a versioned signing Gist, but **GitHub authorization, signed/unsigned PR acceptance tests and external contributor verification remain pending**. No independent attorney certified the CLA; the [corporate form](CLA_CORPORATE_DRAFT.md) remains a draft. See [signing setup](CLA_SIGNING_SETUP.md).
+- A fully activated, end-to-end tested repository-scoped CLA signing/check workflow. The owner has adopted an [individual non-exclusive CLA v1.1](../CONTRIBUTOR_LICENSE_AGREEMENT.md) and published a versioned signing Gist, but **the repository-scoped workflow and live signed/unsigned PR acceptance tests are still being finalized**. The hosted CLA Assistant app is installed for this public repository only, but its broader dashboard OAuth was declined. No independent attorney certified the CLA; the [corporate form](CLA_CORPORATE_DRAFT.md) remains a draft. See [signing setup](CLA_SIGNING_SETUP.md).
 
 ## Release criteria
 

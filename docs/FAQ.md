@@ -26,7 +26,7 @@ Some independent background work may run concurrently, but multiple UI actions o
 
 ### Can the maintainer use my contribution in the commercial edition?
 
-Only to the extent the correct rights holder grants suitable non-exclusive proprietary sublicensing permission. An [individual CLA v1.0](../CONTRIBUTOR_LICENSE_AGREEMENT.md) has been adopted by the project owner, but **the external signing flow is not connected or tested and no outside code is accepted for merge yet**. Company-owned work also needs employer authorization. See [CLA FAQ](CLA_FAQ.md).
+Only to the extent the correct rights holder grants suitable non-exclusive proprietary sublicensing permission. An [individual CLA v1.1](../CONTRIBUTOR_LICENSE_AGREEMENT.md) has been adopted by the project owner, but **the external signing flow is not connected or tested and no outside code is accepted for merge yet**. Company-owned work also needs employer authorization. See [CLA FAQ](CLA_FAQ.md).
 
 ### Can I donate any amount?
 

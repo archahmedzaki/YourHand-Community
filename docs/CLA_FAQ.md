@@ -1,6 +1,6 @@
 # Contributor CLA and commercial licensing — current status
 
-The maintainer adopted the [individual non-exclusive CLA v1.0](../CONTRIBUTOR_LICENSE_AGREEMENT.md), also published as a [versioned public Gist](https://gist.github.com/archahmedzaki/2f98acc13ac5d1e30c518fb1b310bf36). **The third-party CLA Assistant signing integration has not yet been authorized, linked or independently tested. External code PRs remain on hold for merge until that work is completed.** The CLA has not received independent professional legal certification.
+The maintainer adopted the [individual non-exclusive CLA v1.1](../CONTRIBUTOR_LICENSE_AGREEMENT.md), also published as a [versioned public Gist](https://gist.github.com/archahmedzaki/e2b383e438726b5b157bd5451c0171ba). **The hosted CLA Assistant dashboard has not been linked because it requested account-wide OAuth. The repository-scoped GitHub PR-comment assent gate is being activated and is not yet independently validated on both unsigned and signed contributor PRs. External code PRs remain on hold for merge until that work is completed.** The CLA has not received independent professional legal certification.
 
 ## Does a contributor lose copyright?
 
@@ -16,7 +16,7 @@ No. The signer's grant only reaches rights they actually own or control. The mai
 
 ## How will signing work?
 
-After the repository owner explicitly authorizes the third-party app and links the exact agreement Gist, CLA Assistant can request a contributor's affirmative GitHub-authenticated acceptance on PRs and issue a status check. The [activation checklist](CLA_SIGNING_SETUP.md) defines the unsigned and signed test and branch-protection gates. Merely opening a PR, checking a template box or adding a DCO sign-off is **not** this CLA signature.
+The [repository-scoped signing guide](CLA_SCOPED_SIGNING.md) provides the exact statement a contributor personally posts on their PR while signed in to GitHub, and explains the versioned Gist/hash and public consent evidence. The narrow-permission GitHub Actions checker can set the consent status only for the PR author's exact statement. A different user's comment, generic PR checkbox or DCO sign-off does **not** constitute this specific CLA acceptance. The [activation checklist](CLA_SIGNING_SETUP.md) still requires a live unsigned/signed PR test and protected-branch check.
 
 ## Do GitHub click-through signatures guarantee legal enforceability?
 
