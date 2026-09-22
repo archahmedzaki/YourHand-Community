@@ -1,29 +1,25 @@
-# Contributor agreement and commercial-use FAQ
+# Contributor CLA and commercial licensing — current status
 
-This page explains the **planned** intake policy. It does not replace the full agreement, or turn the current [CLA draft](../CONTRIBUTOR_LICENSE_AGREEMENT.md) into an effective signed contract. The actual terms, contributor identity, corporate authority, patent rights and acceptance mechanism require qualified legal review before contributions are merged.
+The maintainer adopted the [individual non-exclusive CLA v1.0](../CONTRIBUTOR_LICENSE_AGREEMENT.md), also published as a [versioned public Gist](https://gist.github.com/archahmedzaki/2f98acc13ac5d1e30c518fb1b310bf36). **The third-party CLA Assistant signing integration has not yet been authorized, linked or independently tested. External code PRs remain on hold for merge until that work is completed.** The CLA has not received independent professional legal certification.
 
-## Why does YourHand request a contributor agreement?
+## Does a contributor lose copyright?
 
-The public community source is released under AGPL-3.0-only; the maintainer also needs separate permission to use eligible contributions in a distinct hosted/proprietary edition. An ordinary PR under the community license **does not automatically grant** all proprietary sublicensing rights needed for that separate edition.
+No. An individual who owns the submitted work would grant additional non-exclusive permissions for its inclusion in AGPL Community and separately licensed proprietary/commercial editions, while retaining copyright and independent rights to use or license the same original work elsewhere. Existing AGPL recipients retain their AGPL rights.
 
-## Do I lose copyright ownership?
+## What about employer-owned contributions?
 
-**No.** The intended CLA is non-exclusive: you keep your copyright and can independently use or license your own original work. You grant the maintainer specified additional rights to use, modify, distribute and sublicense contributions under community and commercial terms, without a required separate royalty. Users of an already released AGPL version retain the rights the AGPL grants them.
+An individual signature cannot license works owned by an employer or co-author. The employer's authorized legal rights holder must grant suitable independent rights under a separate, properly executed corporate document or direct permission. The [corporate CLA](CLA_CORPORATE_DRAFT.md) is still a draft. Do not merge corporate-owned code based only on an individual's successful GitHub CLA status.
 
-## Can a contributor or maintainer close-source other people's work?
+## Are third-party libraries automatically relicensed?
 
-Not automatically. A contributor cannot license third-party code they do not own or have authority to sublicense. The maintainer may only use contributions outside AGPL terms where the applicable rights holder has granted the required separate rights; independent third-party/copyleft dependencies still need individual legal review.
+No. The signer's grant only reaches rights they actually own or control. The maintainer must independently evaluate upstream/copyleft licenses and all notices before including third-party materials in a separately licensed edition.
 
-## What if my employer owns my code?
+## How will signing work?
 
-A personal GitHub signature is **not sufficient** to grant rights owned by an employer. The authorized company rights holder must review and sign appropriate terms first.
+After the repository owner explicitly authorizes the third-party app and links the exact agreement Gist, CLA Assistant can request a contributor's affirmative GitHub-authenticated acceptance on PRs and issue a status check. The [activation checklist](CLA_SIGNING_SETUP.md) defines the unsigned and signed test and branch-protection gates. Merely opening a PR, checking a template box or adding a DCO sign-off is **not** this CLA signature.
 
-## Can I contribute right now?
+## Do GitHub click-through signatures guarantee legal enforceability?
 
-You can discuss bugs and ideas using sanitized issues. **External PRs are not being merged under the current CLA draft.** After qualified counsel finalizes the agreement and a verifiable acceptance/check workflow is enabled, the repository will announce the intake process. An unchecked CLA box in a PR is not a signature, and a DCO sign-off is not a substitute for the planned sublicensing grant.
+No. They may provide evidence of consent, but identity, representative authority, applicable law and any qualified-signature requirements may need additional proof. Independent legal advice is recommended for rights disputes and commercial licensing. No signature data should appear in public issue comments.
 
-## Does the CLA change the public license?
-
-No. Accepted source distributed under AGPL remains AGPL for public recipients. Separate additional licensing permission allows the maintainer to issue **distinct** builds under different terms only to the extent all relevant copyright and dependency rights permit.
-
-See [Licensing policy](LICENSING_POLICY.md), [Counsel review packet](CLA_COUNSEL_REVIEW.md), [Corporate rights-holder draft](CLA_CORPORATE_DRAFT.md), [Planned signing integration](CLA_SIGNING_SETUP.md) and [Contributing](../CONTRIBUTING.md).
+Read [Licensing policy](LICENSING_POLICY.md), [Counsel review](CLA_COUNSEL_REVIEW.md), and [Contributing](../CONTRIBUTING.md).

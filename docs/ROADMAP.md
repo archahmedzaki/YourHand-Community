@@ -8,7 +8,7 @@ This is a **directional public roadmap**, not a commitment to dates or guarantee
 | Reproducible development | Isolated source build and actual Core/Agent pairing lab passed; complete signed installer remains pending | [18/18 scoped lab checks](COMMUNITY_LAB_E2E_REPORT.md), then separately verify a disposable Windows clean installation, real OAuth and release artifacts |
 | Stable agent sessions | Reconnect behavior, stale-socket detection, idempotent action outcomes and safe client upgrades | Network fault injection and continuous session tests |
 | Permissioned collaboration | Ownership/share boundaries, auditability and session concurrency | Cross-account negative tests and explicit mutating-action controls |
-| Contributor licensing | Finalize individual/corporate CLA with qualified counsel and activate authenticated rights-holder signatures | [Counsel review and signer verification](CLA_COUNSEL_REVIEW.md) before any external code merge |
+| Contributor licensing | Owner adopted non-exclusive individual CLA v1.0; activate hosted acceptance workflow, review corporate-owned rights and obtain targeted legal advice if necessary | [Unsigned/signed signer test and branch check](CLA_SIGNING_SETUP.md) before any external code merge |
 | Community release | Reviewed dependency notices, signed artifacts, maintainable issue/PR workflows | Full installer and real identity end-to-end acceptance, release checklist and provenance of published artifacts |
 | Integrations | Improve supported MCP clients, browser/desktop routing and documentation | Tested capability matrix per client, OS and version |
 

@@ -89,7 +89,7 @@ For a **local lab only**, copy `.env.example` to an untracked `.env`, review eac
 
 The community source is distributed under **GNU AGPL-3.0-only**; see [LICENSE](LICENSE). Its copyright license permits commercial use under its terms. The official hosted service is a separate offering. Any distinct proprietary edition may use only source for which the maintainer holds appropriate independent licensing rights.
 
-**Contributors retain ownership.** Before external contributions can be merged into this project, the maintainer must finalize a *non-exclusive contributor license agreement* that separately grants the rights needed for community and proprietary/commercial distribution. The [current CLA is a draft, not active or signable](CONTRIBUTOR_LICENSE_AGREEMENT.md). See [licensing policy](docs/LICENSING_POLICY.md), [legal review packet](docs/CLA_COUNSEL_REVIEW.md) and [signing activation plan](docs/CLA_SIGNING_SETUP.md). Third-party licenses and contributor rights remain in force.
+**Contributors retain ownership.** The maintainer has adopted an [individual non-exclusive CLA v1.0](CONTRIBUTOR_LICENSE_AGREEMENT.md) expressly covering AGPL and separately licensed commercial/proprietary use of original contributions, and published its [versioned signing text](https://gist.github.com/archahmedzaki/2f98acc13ac5d1e30c518fb1b310bf36). **Signing integration is not active yet**: GitHub authorization and an independent unsigned/signed PR test are still required before outside code is accepted for merge. A company-owned contribution also requires authorized rights-holder permission. The CLA was not independently certified by a lawyer. See [signing activation](docs/CLA_SIGNING_SETUP.md) and [licensing policy](docs/LICENSING_POLICY.md).
 
 ## Community and safety
 
