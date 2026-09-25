@@ -457,7 +457,7 @@ function makeMcpServer() {
 
   mcp.registerTool('list_devices', {
     description: 'List YourHand devices that are currently connected.',
-    inputSchema: {}, annotations: { readOnlyHint: true }
+    inputSchema: {}, annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async () => {
     const user = currentUser();
     return jsonText([...devices.values()].filter(d => store.getDeviceForUser(user.id,d.id)).map(d=>({...publicDevice(d),accessRole:store.getDeviceForUser(user.id,d.id).access_role})));
@@ -469,7 +469,7 @@ function makeMcpServer() {
       status:z.enum(['running','paused','completed','needs_review']),
       last_confirmed_step:z.string().max(4000), next_safe_step:z.string().max(4000),
       file_path:z.string().max(2048).optional(), notes:z.string().max(4000).optional()
-    }, annotations:{readOnlyHint:false}
+    }, annotations:{ readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false }
   }, async ({device_id,task_id,expected_revision,status,last_confirmed_step,next_safe_step,file_path,notes}) =>
     jsonText((()=>{
       const linked=store.getDeviceForUser(currentUser().id,device_id);
@@ -479,15 +479,15 @@ function makeMcpServer() {
     })()));
   mcp.registerTool('checkpoint_get', {
     description:'Read the latest persisted checkpoint for a task before attempting to resume it. Never assume an unconfirmed step finished.',
-    inputSchema:{task_id:z.string()},annotations:{readOnlyHint:true}
+    inputSchema:{task_id:z.string()},annotations:{ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({task_id})=>jsonText(taskLedger.get(currentUser().id,task_id)));
   mcp.registerTool('checkpoint_list', {
     description:'List persisted task checkpoints for the signed-in account.',
-    inputSchema:{},annotations:{readOnlyHint:true}
+    inputSchema:{},annotations:{ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ()=>jsonText(taskLedger.list(currentUser().id)));
   mcp.registerTool('device_lock_status',{
     description:'See whether a shared device is currently reserved for a task by any account.',
-    inputSchema:withDevice(),annotations:{readOnlyHint:true}
+    inputSchema:withDevice(),annotations:{ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   },async ({device})=>{
     const d=getDevice(device,'read');
     return jsonText(taskLocks.info(d.id,currentUser().id));
@@ -495,7 +495,7 @@ function makeMcpServer() {
   mcp.registerTool('acquire_device_lock',{
     description:'Reserve the whole interactive device for your own task. Other accounts cannot issue mutating commands until released or lease expiration. No concurrent GUI edits.',
     inputSchema:withDevice({task_id:z.string().regex(/^[A-Za-z0-9][A-Za-z0-9_-]{0,95}$/)}),
-    annotations:{readOnlyHint:false}
+    annotations:{ readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false }
   },async ({device,task_id})=>{
     const d=getDevice(device,'control');
     return jsonText(taskLocks.acquire(d.id,currentUser().id,task_id));
@@ -503,14 +503,14 @@ function makeMcpServer() {
   mcp.registerTool('release_device_lock',{
     description:'Release your own task reservation only after the task has finished or safely paused.',
     inputSchema:withDevice({task_id:z.string().regex(/^[A-Za-z0-9][A-Za-z0-9_-]{0,95}$/)}),
-    annotations:{readOnlyHint:false}
+    annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: false }
   },async ({device,task_id})=>{
     const d=getDevice(device,'control');
     return jsonText({released:taskLocks.release(d.id,currentUser().id,task_id)});
   });
   mcp.registerTool('ping_device', {
     description: 'Measure connectivity to a YourHand device.',
-    inputSchema: withDevice(), annotations: { readOnlyHint: true }
+    inputSchema: withDevice(), annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({ device }) => {
     const t0 = Date.now();
     const r = await rpc(device, 'ping', {}, 10000);
@@ -518,42 +518,42 @@ function makeMcpServer() {
   });
   mcp.registerTool('get_system_info', {
     description: 'Get OS, CPU, memory, uptime and runtime information for a device.',
-    inputSchema: withDevice(), annotations: { readOnlyHint: true }
+    inputSchema: withDevice(), annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({ device }) => jsonText(await rpc(device, 'system_info', {}, 10000)));
   mcp.registerTool('list_device_tools', {
     description: 'List all local Desktop Commander tools exposed by a device.',
-    inputSchema: withDevice(), annotations: { readOnlyHint: true }
+    inputSchema: withDevice(), annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({ device }) => jsonText(getDevice(device,'read').tools));
   mcp.registerTool('call_device_tool', {
     description: 'Call any Desktop Commander MCP tool on a connected device. Use list_device_tools first for unfamiliar tools.',
     inputSchema: withDevice({
       tool: z.string(),
       arguments: z.record(z.string(), z.any()).optional()
-    }), annotations: { readOnlyHint: false }
+    }), annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({ device, tool, arguments: args }) => dcCall(device, tool, args || {}));  mcp.registerTool('start_process', {
     description: 'Start a terminal command or interactive process on a device.',
     inputSchema: withDevice({
       command: z.string(), timeout_ms: z.number().int().optional(),
       shell: z.string().optional(), verbose_timing: z.boolean().optional()
-    }), annotations: { readOnlyHint: false }
+    }), annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({ device, ...args }) => dcCall(device, 'start_process', args));
   mcp.registerTool('interact_with_process', {
     description: 'Send input to a running process and receive its response.',
     inputSchema: withDevice({
       pid: z.number().int(), input: z.string(), timeout_ms: z.number().int().optional(),
       wait_for_prompt: z.boolean().optional(), verbose_timing: z.boolean().optional()
-    }), annotations: { readOnlyHint: false }
+    }), annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({ device, ...args }) => dcCall(device, 'interact_with_process', args));
   mcp.registerTool('read_process_output', {
     description: 'Read buffered or new output from a running process.',
     inputSchema: withDevice({
       pid: z.number().int(), offset: z.number().int().optional(), length: z.number().int().optional(),
       timeout_ms: z.number().int().optional(), verbose_timing: z.boolean().optional()
-    }), annotations: { readOnlyHint: true }
+    }), annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({ device, ...args }) => dcCall(device, 'read_process_output', args));  mcp.registerTool('list_directory', {
     description: 'List files and folders on a device.',
     inputSchema: withDevice({ path: z.string(), depth: z.number().int().min(1).max(10).optional() }),
-    annotations: { readOnlyHint: true }
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({ device, ...args }) => dcCall(device, 'list_directory', args));
   mcp.registerTool('read_file', {
     description: 'Read a file using Desktop Commander format-aware readers.',
@@ -561,21 +561,21 @@ function makeMcpServer() {
       path: z.string(), isUrl: z.boolean().optional(), offset: z.number().int().optional(),
       length: z.number().int().optional(), sheet: z.string().optional(), range: z.string().optional(),
       options: z.record(z.string(), z.any()).optional()
-    }), annotations: { readOnlyHint: true }
+    }), annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({ device, ...args }) => dcCall(device, 'read_file', args));
   mcp.registerTool('read_multiple_files', {
     description: 'Read several files from a device in one call.',
     inputSchema: withDevice({ paths: z.array(z.string()).min(1).max(50) }),
-    annotations: { readOnlyHint: true }
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({ device, ...args }) => dcCall(device, 'read_multiple_files', args));
   mcp.registerTool('write_file', {
     description: 'Create, rewrite or append a file on a device.',
     inputSchema: withDevice({ path: z.string(), content: z.string(), mode: z.enum(['rewrite','append']).optional() }),
-    annotations: { readOnlyHint: false, destructiveHint: true }
+    annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: false }
   }, async ({ device, ...args }) => dcCall(device, 'write_file', args));  mcp.registerTool('get_config', {
     description: 'Read Desktop Commander configuration from a device.',
     inputSchema: withDevice(),
-    annotations: { readOnlyHint: true }
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({ device }) => dcCall(device, 'get_config', {}));
 
   const nativeArgsSchema = z.record(z.string(), z.any()).optional();
@@ -583,7 +583,7 @@ function makeMcpServer() {
   mcp.registerTool('session_state', {
     description: 'Report whether the interactive Windows session is locked/unlocked and whether native input is currently available.',
     inputSchema: withDevice(),
-    annotations: { readOnlyHint: true }
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({ device }) => jsonText(await rpc(device, 'native_call', { action:'session_state', args:{} }, 10000)));
 
   mcp.registerTool('native_call', {
@@ -593,7 +593,7 @@ function makeMcpServer() {
       arguments: nativeArgsSchema,
       timeout_ms: z.number().int().min(500).max(180000).optional()
     }),
-    annotations: { readOnlyHint: false }
+    annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({ device, action, arguments: args, timeout_ms }) =>
     jsonText(await rpc(device, 'native_call', { action, args: args || {}, timeoutMs: timeout_ms || 15000 }, (timeout_ms || 15000) + 3000)));
 
@@ -604,7 +604,7 @@ function makeMcpServer() {
       continue_on_error: z.boolean().optional(),
       timeout_ms: z.number().int().min(500).max(180000).optional()
     }),
-    annotations: { readOnlyHint: false }
+    annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({ device, steps, continue_on_error, timeout_ms }) =>
     jsonText(await rpc(device, 'native_call', {
       action: 'batch',
@@ -620,7 +620,7 @@ function makeMcpServer() {
       timeout_ms: z.number().int().min(500).max(180000).optional(),
       screenshot: z.record(z.string(), z.any()).optional()
     }),
-    annotations: { readOnlyHint: false }
+    annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({ device, steps, continue_on_error, timeout_ms, screenshot }) =>
     normalizeResult(await rpc(device, 'native_batch_frame', {
       steps, continueOnError: !!continue_on_error,
@@ -631,7 +631,7 @@ function makeMcpServer() {
   mcp.registerTool('computer_operation_status',{
     description:'Read the persistent outcome of a guarded device operation. A running or unknown outcome MUST NOT be automatically replayed after reconnect.',
     inputSchema:withDevice({idempotency_key:z.string().min(8).max(128)}),
-    annotations:{readOnlyHint:true}
+    annotations:{ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   },async ({device,idempotency_key})=>{
     const d=getDevice(device,'control'),user=currentUser();
     const operationId='op_'+crypto.createHash('sha256').update(idempotency_key).digest('hex').slice(0,64);
@@ -655,7 +655,7 @@ function makeMcpServer() {
       quality:z.number().int().min(20).max(95).optional(),
       maxWidth:z.number().int().min(240).max(1920).optional(),
       maxHeight:z.number().int().min(180).max(1200).optional()
-    }),annotations:{readOnlyHint:true}
+    }),annotations:{ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   },async ({device,...params}) => normalizeResult(await execution.observe({
     userId:currentUser().id,deviceId:getDevice(device,'control').id,params
   })));
@@ -667,7 +667,7 @@ function makeMcpServer() {
       idempotency_key:z.string().min(8).max(128),
       x:z.number().int().min(0),y:z.number().int().min(0),
       verify_title_contains:z.string().min(1).max(120).optional()
-    }),annotations:{readOnlyHint:false}
+    }),annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: true }
   },async ({device,observation_id,idempotency_key,x,y,verify_title_contains}) =>
     jsonText(await durableComputerAction(device,idempotency_key,'computer_act',({observation_id,x,y,verify_title_contains}),
       ({userId,deviceId,actionId})=>execution.act({userId,deviceId,actionId,observationId:observation_id,
@@ -680,7 +680,7 @@ function makeMcpServer() {
       observation_id:z.string().min(1),
       idempotency_key:z.string().min(8).max(128),
       steps:z.array(z.record(z.string(),z.any())).min(1).max(20)
-    }),annotations:{readOnlyHint:false}
+    }),annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: true }
   },async ({device,observation_id,idempotency_key,steps}) =>
     jsonText(await durableComputerAction(device,idempotency_key,'computer_semantic_act',({observation_id,steps}),
       ({userId,deviceId,actionId})=>execution.act({userId,deviceId,actionId,observationId:observation_id,
@@ -695,7 +695,7 @@ function makeMcpServer() {
       expect:z.record(z.string(),z.any()).optional(),
       x:z.number().int().min(0).optional(),y:z.number().int().min(0).optional(),
       allow_pixel_fallback:z.boolean().optional()
-    }),annotations:{readOnlyHint:false}
+    }),annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: true }
   },async ({device,observation_id,idempotency_key,selector,expect,x,y,allow_pixel_fallback}) =>
     jsonText(await durableComputerAction(device,idempotency_key,'computer_execute',({observation_id,selector,expect,x,y,allow_pixel_fallback}),
       ({userId,deviceId,actionId})=>execution.autoAct({userId,deviceId,actionId,observationId:observation_id,
@@ -706,7 +706,7 @@ function makeMcpServer() {
     description: 'Guarded BACKGROUND browser observation. Supply an explicit CDP tab ID (from browser_tabs) and a CSS selector. Return a private observationId bound to account, device, tab session, URL and exact element state. Does not require the Windows foreground or start a browser automatically.',
     inputSchema:withDevice({
       tab_id:z.string().min(1),selector:z.string().min(1).max(256)
-    }),annotations:{readOnlyHint:true}
+    }),annotations:{ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true }
   },async ({device,tab_id,selector}) =>
     jsonText(await browserExecution.observe({userId:currentUser().id,deviceId:getDevice(device,'control').id,
       tabId:tab_id,selector})));
@@ -719,7 +719,7 @@ function makeMcpServer() {
       text:z.string().max(20000).optional(),
       expect_url_contains:z.string().min(1).max(256).optional(),
       expect_text_contains:z.string().min(1).max(256).optional()
-    }),annotations:{readOnlyHint:false}
+    }),annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: true }
   },async ({device,observation_id,idempotency_key,selector,kind,text,expect_url_contains,expect_text_contains}) =>
     jsonText(await durableComputerAction(device,idempotency_key,'computer_browser_act',({observation_id,selector,kind,text,expect_url_contains,expect_text_contains}),
       ({userId,deviceId,actionId})=>browserExecution.act({userId,deviceId,actionId,observationId:observation_id,
@@ -743,7 +743,7 @@ function makeMcpServer() {
     inputSchema:withDevice({kind:z.enum(['file_read','file_write','process_run','browser','desktop']),
       requires_admin:z.boolean().optional(),allow_browser_start:z.boolean().optional(),
       alternate_kind:z.enum(['file_read','file_write','process_run','browser']).optional()}),
-    annotations:{readOnlyHint:true}
+    annotations:{ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   },async ({device,kind,requires_admin,allow_browser_start,alternate_kind})=>{
     const d=getDevice(device,'control'),caps=await currentCapabilities(d.id);
     const plan=chooseRoute({kind,session:caps.session,
@@ -774,7 +774,7 @@ function makeMcpServer() {
       timeout_ms:z.number().int().min(1000).max(120000).optional(),
       requires_admin:z.boolean().optional(),
       idempotency_key:z.string().min(8).max(128).optional()
-    }),annotations:{readOnlyHint:false}
+    }),annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: true }
   },async ({device,kind,path,command,shell,timeout_ms,requires_admin,idempotency_key})=>{
     const d=getDevice(device,'control'),caps=await currentCapabilities(d.id);
     const plan=chooseRoute({kind,session:caps.session,
@@ -797,7 +797,7 @@ function makeMcpServer() {
 
   mcp.registerTool('computer_doctor', {
     description: 'Diagnose one of YOUR connected devices without modifying its state. Check remote session lock, native helper, OS/background capabilities, browser CDP status and RPC latency. Report which execution routes are currently available.',
-    inputSchema:withDevice(),annotations:{readOnlyHint:true}
+    inputSchema:withDevice(),annotations:{ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   },async ({device}) => {
     const d=getDevice(device,'control'),started=Date.now();
     const [session,system,browser]=await Promise.allSettled([
@@ -836,7 +836,7 @@ function makeMcpServer() {
       maxWidth: z.number().int().min(240).max(1920).optional(),
       maxHeight: z.number().int().min(180).max(1200).optional()
     }),
-    annotations: { readOnlyHint: true }
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({ device, ...args }) =>
     normalizeResult(await rpc(device, 'native_observe', {autoRetarget:true,...args}, 33000)));
 
@@ -852,7 +852,7 @@ function makeMcpServer() {
       button: z.enum(['left','right','middle']).optional(),
       count: z.number().int().min(1).max(5).optional()
     }),
-    annotations: { readOnlyHint: false }
+    annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({ device, ...args }) =>
     jsonText(await rpc(device, 'native_call', { action:'click_preview', args:{autoRetarget:true,...args} }, 15000)));
 
@@ -863,7 +863,7 @@ function makeMcpServer() {
       title: z.string().optional(), titleContains: z.string().optional(),
       requireForeground: z.boolean().optional()
     }),
-    annotations: { readOnlyHint: true }
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({ device, ...args }) =>
     jsonText(await rpc(device, 'native_call', { action:'semantic_snapshot', args:{autoRetarget:true,...args} }, 30000)));
 
@@ -875,7 +875,7 @@ function makeMcpServer() {
       requireForeground: z.boolean().optional(),
       steps: z.array(z.record(z.string(), z.any())).min(1).max(20)
     }),
-    annotations: { readOnlyHint: false }
+    annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({ device, steps, ...scope }) =>
     jsonText(await rpc(device, 'native_call', { action:'semantic_batch', args:{autoRetarget:true,...scope,steps}, timeoutMs:30000 }, 33000)));
 
@@ -890,18 +890,18 @@ function makeMcpServer() {
       maxHeight: z.number().int().min(180).max(4320).optional(),
       keep: z.boolean().optional()
     }),
-    annotations: { readOnlyHint: true }
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({ device, ...args }) => normalizeResult(await rpc(device, 'native_screenshot', args, 30000)));
 
   mcp.registerTool('list_windows', {
     description: 'List top-level Windows windows with HWND, PID, title, process and bounds.',
     inputSchema: withDevice({ pid: z.number().int().optional(), visibleOnly: z.boolean().optional() }),
-    annotations: { readOnlyHint: true }
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({ device, ...args }) => jsonText(await rpc(device, 'native_call', { action:'list_windows', args }, 15000)));
 
   mcp.registerTool('foreground_window', {
     description: 'Get the current foreground window.',
-    inputSchema: withDevice(), annotations: { readOnlyHint: true }
+    inputSchema: withDevice(), annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({ device }) => jsonText(await rpc(device, 'native_call', { action:'foreground', args:{} }, 10000)));
 
   mcp.registerTool('focus_window', {
@@ -910,7 +910,7 @@ function makeMcpServer() {
       hwnd: z.number().optional(), pid: z.number().int().optional(),
       title: z.string().optional(), titleContains: z.string().optional(), settleMs: z.number().int().optional()
     }),
-    annotations: { readOnlyHint: false }
+    annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({ device, ...args }) => jsonText(await rpc(device, 'native_call', { action:'focus_window', args }, 10000)));
 
   mcp.registerTool('ui_tree', {
@@ -919,7 +919,7 @@ function makeMcpServer() {
       hwnd: z.number().optional(), pid: z.number().int().optional(),
       titleContains: z.string().optional(), limit: z.number().int().min(1).max(3000).optional()
     }),
-    annotations: { readOnlyHint: true }
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({ device, ...args }) => jsonText(await rpc(device, 'native_call', { action:'ui_tree', args }, 30000)));
 
   mcp.registerTool('ui_find', {
@@ -930,7 +930,7 @@ function makeMcpServer() {
       controlType: z.string().optional(), className: z.string().optional(),
       limit: z.number().int().min(1).max(100).optional()
     }),
-    annotations: { readOnlyHint: true }
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({ device, ...args }) => jsonText(await rpc(device, 'native_call', { action:'ui_find', args }, 30000)));
 
   mcp.registerTool('ui_invoke', {
@@ -940,7 +940,7 @@ function makeMcpServer() {
       name: z.string().optional(), nameContains: z.string().optional(), automationId: z.string().optional(),
       controlType: z.string().optional(), className: z.string().optional()
     }),
-    annotations: { readOnlyHint: false }
+    annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({ device, ...args }) => jsonText(await rpc(device, 'native_call', { action:'ui_invoke', args }, 30000)));
 
   mcp.registerTool('ui_set_value', {
@@ -950,7 +950,7 @@ function makeMcpServer() {
       name: z.string().optional(), nameContains: z.string().optional(), automationId: z.string().optional(),
       controlType: z.string().optional(), className: z.string().optional(), value: z.string()
     }),
-    annotations: { readOnlyHint: false }
+    annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({ device, ...args }) => jsonText(await rpc(device, 'native_call', { action:'ui_set_value', args }, 30000)));
 
   mcp.registerTool('mouse', {
@@ -960,41 +960,41 @@ function makeMcpServer() {
       kind: z.enum(['move','click','double']).optional(),
       button: z.enum(['left','right','middle']).optional(), count: z.number().int().min(1).max(5).optional()
     }),
-    annotations: { readOnlyHint: false }
+    annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({ device, ...args }) => jsonText(await rpc(device, 'native_call', { action:'mouse', args }, 10000)));
 
   mcp.registerTool('scroll', {
     description: 'Send native mouse-wheel input.',
     inputSchema: withDevice({ x: z.number().int().optional(), y: z.number().int().optional(), delta: z.number().int().optional() }),
-    annotations: { readOnlyHint: false }
+    annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true }
   }, async ({ device, ...args }) => jsonText(await rpc(device, 'native_call', { action:'scroll', args }, 10000)));
 
   mcp.registerTool('hotkey', {
     description: 'Send a native keyboard shortcut such as CTRL+S or ALT+F4.',
     inputSchema: withDevice({ combo: z.string(), settleMs: z.number().int().optional() }),
-    annotations: { readOnlyHint: false }
+    annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({ device, ...args }) => jsonText(await rpc(device, 'native_call', { action:'hotkey', args }, 10000)));
 
   mcp.registerTool('type_text', {
     description: 'Type Unicode text through native keyboard input.',
     inputSchema: withDevice({ text: z.string(), delayMs: z.number().int().min(0).max(1000).optional() }),
-    annotations: { readOnlyHint: false }
+    annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({ device, ...args }) => jsonText(await rpc(device, 'native_call', { action:'type_text', args }, 30000)));
 
   mcp.registerTool('clipboard_get', {
     description: 'Read text from the Windows clipboard.',
-    inputSchema: withDevice(), annotations: { readOnlyHint: true }
+    inputSchema: withDevice(), annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({ device }) => jsonText(await rpc(device, 'native_call', { action:'clipboard_get', args:{} }, 10000)));
 
   mcp.registerTool('clipboard_set', {
     description: 'Set text on the Windows clipboard.',
-    inputSchema: withDevice({ text: z.string() }), annotations: { readOnlyHint: false }
+    inputSchema: withDevice({ text: z.string() }), annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: false }
   }, async ({ device, ...args }) => jsonText(await rpc(device, 'native_call', { action:'clipboard_set', args }, 10000)));
 
   mcp.registerTool('launch_app', {
     description: 'Launch an application or document through Windows.',
     inputSchema: withDevice({ file: z.string(), arguments: z.string().optional() }),
-    annotations: { readOnlyHint: false }
+    annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true }
   }, async ({ device, ...args }) => jsonText(await rpc(device, 'native_call', { action:'launch', args }, 15000)));
 
   mcp.registerTool('wait_window', {
@@ -1003,62 +1003,62 @@ function makeMcpServer() {
       pid: z.number().int().optional(), title: z.string().optional(), titleContains: z.string().optional(),
       timeoutMs: z.number().int().min(100).max(180000).optional(), pollMs: z.number().int().min(20).max(5000).optional()
     }),
-    annotations: { readOnlyHint: true }
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({ device, ...args }) => jsonText(await rpc(device, 'native_call', { action:'wait_window', args, timeoutMs: args.timeoutMs || 10000 }, (args.timeoutMs || 10000) + 3000)));
 
   mcp.registerTool('browser_status', {
     description: 'Check YourHand isolated Chromium CDP status on a device.',
-    inputSchema: withDevice(), annotations: { readOnlyHint: true }
+    inputSchema: withDevice(), annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({device}) => jsonText(await rpc(device,'browser_call',{action:'status',args:{}},10000)));
 
   mcp.registerTool('browser_start', {
     description: 'Start or attach to YourHand isolated Chromium browser with local CDP control. Works without mouse/keyboard.',
-    inputSchema: withDevice({ url:z.string().optional(), timeout_ms:z.number().int().optional() }), annotations:{readOnlyHint:false}
+    inputSchema: withDevice({ url:z.string().optional(), timeout_ms:z.number().int().optional() }), annotations:{ readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true }
   }, async ({device,url,timeout_ms}) => jsonText(await rpc(device,'browser_call',{action:'start',args:{url,timeoutMs:timeout_ms||10000}},(timeout_ms||10000)+3000)));
 
   mcp.registerTool('browser_tabs', {
     description: 'List controllable browser tabs/targets.',
-    inputSchema: withDevice(), annotations:{readOnlyHint:true}
+    inputSchema: withDevice(), annotations:{ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({device}) => jsonText(await rpc(device,'browser_call',{action:'tabs',args:{}},10000)));
 
   mcp.registerTool('browser_navigate', {
     description: 'Navigate a CDP-controlled browser tab directly and wait for DOM readiness.',
-    inputSchema: withDevice({ url:z.string(), targetId:z.string().optional(), newTab:z.boolean().optional(), timeout_ms:z.number().int().optional() }), annotations:{readOnlyHint:false}
+    inputSchema: withDevice({ url:z.string(), targetId:z.string().optional(), newTab:z.boolean().optional(), timeout_ms:z.number().int().optional() }), annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({device,url,targetId,newTab,timeout_ms}) => jsonText(await rpc(device,'browser_call',{action:'navigate',args:{url,targetId,newTab,timeoutMs:timeout_ms||15000}},(timeout_ms||15000)+3000)));
 
   mcp.registerTool('browser_eval', {
     description: 'Evaluate JavaScript in a browser tab through Chrome DevTools Protocol.',
-    inputSchema: withDevice({ expression:z.string(), targetId:z.string().optional(), timeout_ms:z.number().int().optional() }), annotations:{readOnlyHint:false}
+    inputSchema: withDevice({ expression:z.string(), targetId:z.string().optional(), timeout_ms:z.number().int().optional() }), annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({device,expression,targetId,timeout_ms}) => jsonText(await rpc(device,'browser_call',{action:'eval',args:{expression,targetId,timeoutMs:timeout_ms||15000}},(timeout_ms||15000)+3000)));
 
   mcp.registerTool('browser_text', {
     description: 'Read visible page text directly from the DOM.',
-    inputSchema: withDevice({ targetId:z.string().optional() }), annotations:{readOnlyHint:true}
+    inputSchema: withDevice({ targetId:z.string().optional() }), annotations:{ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true }
   }, async ({device,targetId}) => jsonText(await rpc(device,'browser_call',{action:'text',args:{targetId}},15000)));
 
   mcp.registerTool('browser_click', {
     description: 'Click a DOM element by CSS selector without screenshots or mouse movement.',
-    inputSchema: withDevice({ selector:z.string(), targetId:z.string().optional() }), annotations:{readOnlyHint:false}
+    inputSchema: withDevice({ selector:z.string(), targetId:z.string().optional() }), annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({device,selector,targetId}) => jsonText(await rpc(device,'browser_call',{action:'click',args:{selector,targetId}},15000)));
 
   mcp.registerTool('browser_type', {
     description: 'Set an input value by CSS selector and dispatch input/change events directly in the DOM.',
-    inputSchema: withDevice({ selector:z.string(), text:z.string(), targetId:z.string().optional() }), annotations:{readOnlyHint:false}
+    inputSchema: withDevice({ selector:z.string(), text:z.string(), targetId:z.string().optional() }), annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({device,selector,text,targetId}) => jsonText(await rpc(device,'browser_call',{action:'type',args:{selector,text,targetId}},15000)));
 
   mcp.registerTool('browser_wait_selector', {
     description: 'Wait locally for a CSS selector to appear, avoiding repeated AI polling.',
-    inputSchema: withDevice({ selector:z.string(), targetId:z.string().optional(), timeout_ms:z.number().int().optional(), poll_ms:z.number().int().optional() }), annotations:{readOnlyHint:true}
+    inputSchema: withDevice({ selector:z.string(), targetId:z.string().optional(), timeout_ms:z.number().int().optional(), poll_ms:z.number().int().optional() }), annotations:{ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true }
   }, async ({device,selector,targetId,timeout_ms,poll_ms}) => jsonText(await rpc(device,'browser_call',{action:'wait_selector',args:{selector,targetId,timeoutMs:timeout_ms||10000,pollMs:poll_ms||80}},(timeout_ms||10000)+3000)));
 
   mcp.registerTool('browser_batch', {
     description: 'Execute multiple browser/CDP actions locally in one round trip for high-speed deterministic workflows.',
-    inputSchema: withDevice({ steps:z.array(z.record(z.string(),z.any())).min(1).max(100), continue_on_error:z.boolean().optional(), timeout_ms:z.number().int().optional() }), annotations:{readOnlyHint:false}
+    inputSchema: withDevice({ steps:z.array(z.record(z.string(),z.any())).min(1).max(100), continue_on_error:z.boolean().optional(), timeout_ms:z.number().int().optional() }), annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({device,steps,continue_on_error,timeout_ms}) => jsonText(await rpc(device,'browser_batch',{steps,continueOnError:!!continue_on_error},(timeout_ms||60000))));
 
   mcp.registerTool('browser_screenshot', {
     description: 'Capture the browser page directly through CDP, including beyond the visible viewport.',
-    inputSchema: withDevice({ targetId:z.string().optional(), format:z.enum(['png','jpeg']).optional(), captureBeyondViewport:z.boolean().optional(), timeout_ms:z.number().int().optional() }), annotations:{readOnlyHint:true}
+    inputSchema: withDevice({ targetId:z.string().optional(), format:z.enum(['png','jpeg']).optional(), captureBeyondViewport:z.boolean().optional(), timeout_ms:z.number().int().optional() }), annotations:{ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true }
   }, async ({device,...args}) => normalizeResult(await rpc(device,'browser_screenshot',{...args,timeoutMs:args.timeout_ms||30000},(args.timeout_ms||30000)+3000)));
 
   mcp.registerTool('exec_command', {
@@ -1070,97 +1070,97 @@ function makeMcpServer() {
       timeout_ms:z.number().int().min(500).max(300000).optional(),
       max_bytes:z.number().int().min(1024).max(20971520).optional()
     }),
-    annotations:{readOnlyHint:false}
+    annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({device,command,shell,cwd,timeout_ms,max_bytes}) => jsonText(await rpc(device,'exec',{command,shell,cwd,timeoutMs:timeout_ms||60000,maxBytes:max_bytes||5242880},(timeout_ms||60000)+5000)));
 
   mcp.registerTool('fs_stat', {
     description: 'Get native filesystem metadata directly from YourHand.',
-    inputSchema: withDevice({ path:z.string() }), annotations:{readOnlyHint:true}
+    inputSchema: withDevice({ path:z.string() }), annotations:{ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({device,path}) => jsonText(await rpc(device,'fs_call',{action:'stat',args:{path}},15000)));
 
   mcp.registerTool('fs_list', {
     description: 'List a directory directly through YourHand native filesystem.',
-    inputSchema: withDevice({ path:z.string() }), annotations:{readOnlyHint:true}
+    inputSchema: withDevice({ path:z.string() }), annotations:{ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({device,path}) => jsonText(await rpc(device,'fs_call',{action:'list',args:{path}},30000)));
 
   mcp.registerTool('fs_read_text', {
     description: 'Read a text file directly with offset and bounded byte length.',
-    inputSchema: withDevice({ path:z.string(), offset:z.number().int().min(0).optional(), length:z.number().int().min(0).optional(), max_bytes:z.number().int().min(1).max(20971520).optional(), encoding:z.string().optional() }), annotations:{readOnlyHint:true}
+    inputSchema: withDevice({ path:z.string(), offset:z.number().int().min(0).optional(), length:z.number().int().min(0).optional(), max_bytes:z.number().int().min(1).max(20971520).optional(), encoding:z.string().optional() }), annotations:{ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({device,path,offset,length,max_bytes,encoding}) => jsonText(await rpc(device,'fs_call',{action:'read_text',args:{path,offset,length,maxBytes:max_bytes,encoding}},30000)));
 
   mcp.registerTool('fs_read_binary', {
     description: 'Read a bounded binary file directly as base64.',
-    inputSchema: withDevice({ path:z.string(), max_bytes:z.number().int().min(1).max(20971520).optional() }), annotations:{readOnlyHint:true}
+    inputSchema: withDevice({ path:z.string(), max_bytes:z.number().int().min(1).max(20971520).optional() }), annotations:{ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({device,path,max_bytes}) => jsonText(await rpc(device,'fs_call',{action:'read_binary',args:{path,maxBytes:max_bytes}},30000)));
 
   mcp.registerTool('fs_write_text', {
     description: 'Create, overwrite or append a text file directly through YourHand.',
-    inputSchema: withDevice({ path:z.string(), text:z.string(), append:z.boolean().optional(), encoding:z.string().optional(), create_parents:z.boolean().optional() }), annotations:{readOnlyHint:false,destructiveHint:true}
+    inputSchema: withDevice({ path:z.string(), text:z.string(), append:z.boolean().optional(), encoding:z.string().optional(), create_parents:z.boolean().optional() }), annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: false }
   }, async ({device,path,text,append,encoding,create_parents}) => jsonText(await rpc(device,'fs_call',{action:'write_text',args:{path,text,append,encoding,createParents:create_parents!==false}},30000)));
 
   mcp.registerTool('fs_write_binary', {
     description: 'Create, overwrite or append a binary file from base64 directly through YourHand.',
-    inputSchema: withDevice({ path:z.string(), base64:z.string(), append:z.boolean().optional(), create_parents:z.boolean().optional() }), annotations:{readOnlyHint:false,destructiveHint:true}
+    inputSchema: withDevice({ path:z.string(), base64:z.string(), append:z.boolean().optional(), create_parents:z.boolean().optional() }), annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: false }
   }, async ({device,path,base64,append,create_parents}) => jsonText(await rpc(device,'fs_call',{action:'write_binary',args:{path,base64,append,createParents:create_parents!==false}},30000)));
 
   mcp.registerTool('fs_mkdir', {
     description: 'Create a directory directly through YourHand.',
-    inputSchema: withDevice({ path:z.string(), recursive:z.boolean().optional() }), annotations:{readOnlyHint:false}
+    inputSchema: withDevice({ path:z.string(), recursive:z.boolean().optional() }), annotations:{ readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({device,path,recursive}) => jsonText(await rpc(device,'fs_call',{action:'mkdir',args:{path,recursive:recursive!==false}},15000)));
 
   mcp.registerTool('fs_move', {
     description: 'Move or rename a filesystem item directly through YourHand.',
-    inputSchema: withDevice({ path:z.string(), destination:z.string(), create_parents:z.boolean().optional() }), annotations:{readOnlyHint:false,destructiveHint:true}
+    inputSchema: withDevice({ path:z.string(), destination:z.string(), create_parents:z.boolean().optional() }), annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: false }
   }, async ({device,path,destination,create_parents}) => jsonText(await rpc(device,'fs_call',{action:'move',args:{path,destination,createParents:create_parents!==false}},30000)));
 
   mcp.registerTool('fs_copy', {
     description: 'Copy a file or directory directly through YourHand.',
-    inputSchema: withDevice({ path:z.string(), destination:z.string(), recursive:z.boolean().optional(), force:z.boolean().optional(), create_parents:z.boolean().optional() }), annotations:{readOnlyHint:false}
+    inputSchema: withDevice({ path:z.string(), destination:z.string(), recursive:z.boolean().optional(), force:z.boolean().optional(), create_parents:z.boolean().optional() }), annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: false }
   }, async ({device,path,destination,recursive,force,create_parents}) => jsonText(await rpc(device,'fs_call',{action:'copy',args:{path,destination,recursive:!!recursive,force:force!==false,createParents:create_parents!==false}},60000)));
 
   mcp.registerTool('fs_remove', {
     description: 'Remove a file or directory directly through YourHand.',
-    inputSchema: withDevice({ path:z.string(), recursive:z.boolean().optional(), force:z.boolean().optional() }), annotations:{readOnlyHint:false,destructiveHint:true}
+    inputSchema: withDevice({ path:z.string(), recursive:z.boolean().optional(), force:z.boolean().optional() }), annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: false }
   }, async ({device,path,recursive,force}) => jsonText(await rpc(device,'fs_call',{action:'remove',args:{path,recursive:!!recursive,force:!!force}},30000)));
 
   mcp.registerTool('fs_search', {
     description: 'Search filenames/paths recursively on the device without Desktop Commander.',
-    inputSchema: withDevice({ path:z.string(), query:z.string().optional(), max_results:z.number().int().min(1).max(5000).optional(), max_depth:z.number().int().min(0).max(64).optional(), include_dirs:z.boolean().optional() }), annotations:{readOnlyHint:true}
+    inputSchema: withDevice({ path:z.string(), query:z.string().optional(), max_results:z.number().int().min(1).max(5000).optional(), max_depth:z.number().int().min(0).max(64).optional(), include_dirs:z.boolean().optional() }), annotations:{ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({device,path,query,max_results,max_depth,include_dirs}) => jsonText(await rpc(device,'fs_call',{action:'search',args:{path,query,maxResults:max_results,maxDepth:max_depth,includeDirs:!!include_dirs}},65000)));
 
   mcp.registerTool('process_start', {
     description: 'Start a native YourHand-managed process session. Interactive sessions keep stdin/stdout open for later calls.',
-    inputSchema: withDevice({ command:z.string().optional(), shell:z.enum(['powershell','cmd']).optional(), interactive:z.boolean().optional(), executable:z.string().optional(), arguments:z.array(z.string()).optional(), cwd:z.string().optional(), show_window:z.boolean().optional() }), annotations:{readOnlyHint:false}
+    inputSchema: withDevice({ command:z.string().optional(), shell:z.enum(['powershell','cmd']).optional(), interactive:z.boolean().optional(), executable:z.string().optional(), arguments:z.array(z.string()).optional(), cwd:z.string().optional(), show_window:z.boolean().optional() }), annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({device,command,shell,interactive,executable,arguments:argv,cwd,show_window}) => jsonText(await rpc(device,'proc_call',{action:'start',args:{command,shell,interactive,executable,arguments:argv,cwd,showWindow:!!show_window}},15000)));
 
   mcp.registerTool('process_sessions', {
     description: 'List YourHand-managed process sessions.',
-    inputSchema: withDevice(), annotations:{readOnlyHint:true}
+    inputSchema: withDevice(), annotations:{ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({device}) => jsonText(await rpc(device,'proc_call',{action:'list',args:{}},10000)));
 
   mcp.registerTool('process_read', {
     description: 'Read incremental buffered stdout/stderr from a YourHand process session.',
-    inputSchema: withDevice({ session_id:z.string(), offset:z.number().int().min(0).optional() }), annotations:{readOnlyHint:true}
+    inputSchema: withDevice({ session_id:z.string(), offset:z.number().int().min(0).optional() }), annotations:{ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
   }, async ({device,session_id,offset}) => jsonText(await rpc(device,'proc_call',{action:'read',args:{sessionId:session_id,offset}},15000)));
 
   mcp.registerTool('process_write', {
     description: 'Write stdin to a YourHand interactive process session.',
-    inputSchema: withDevice({ session_id:z.string(), input:z.string() }), annotations:{readOnlyHint:false}
+    inputSchema: withDevice({ session_id:z.string(), input:z.string() }), annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true }
   }, async ({device,session_id,input}) => jsonText(await rpc(device,'proc_call',{action:'write',args:{sessionId:session_id,input}},15000)));
 
   mcp.registerTool('process_kill', {
     description: 'Terminate a YourHand-managed process session.',
-    inputSchema: withDevice({ session_id:z.string(), signal:z.string().optional() }), annotations:{readOnlyHint:false,destructiveHint:true}
+    inputSchema: withDevice({ session_id:z.string(), signal:z.string().optional() }), annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: false }
   }, async ({device,session_id,signal}) => jsonText(await rpc(device,'proc_call',{action:'kill',args:{sessionId:session_id,signal}},15000)));
 
   mcp.registerTool('process_close_stdin', {
     description: 'Close stdin for a YourHand-managed process session.',
-    inputSchema: withDevice({ session_id:z.string() }), annotations:{readOnlyHint:false}
+    inputSchema: withDevice({ session_id:z.string() }), annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: false }
   }, async ({device,session_id}) => jsonText(await rpc(device,'proc_call',{action:'close_stdin',args:{sessionId:session_id}},10000)));
 
   mcp.registerTool('process_forget', {
     description: 'Forget a completed YourHand process session and release its buffered history.',
-    inputSchema: withDevice({ session_id:z.string(), force:z.boolean().optional() }), annotations:{readOnlyHint:false,destructiveHint:true}
+    inputSchema: withDevice({ session_id:z.string(), force:z.boolean().optional() }), annotations:{ readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: false }
   }, async ({device,session_id,force}) => jsonText(await rpc(device,'proc_call',{action:'forget',args:{sessionId:session_id,force:!!force}},10000)));
 
   return mcp;
