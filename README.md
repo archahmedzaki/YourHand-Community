@@ -13,7 +13,7 @@
 [![M8ven Score](https://m8ven.ai/badge/mcp/archahmedzaki-yourhand-community-dnpt6f)](https://m8ven.ai/mcp/archahmedzaki-yourhand-community-dnpt6f)
 [![Source preview](https://img.shields.io/badge/release-source%20preview-orange)](docs/PROJECT_STATUS.md)
 
-[Overview](#overview) · [Get started](#get-started) · [Documentation](#documentation) · [Roadmap](docs/ROADMAP.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
+[Overview](#overview) · [Get started](#get-started) · [Documentation](#documentation) · [Media brief](MEDIA.md) · [Roadmap](docs/ROADMAP.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
 
 </div>
 
