@@ -17,6 +17,16 @@
 
 </div>
 
+## Try YourHand on your Windows PCs
+
+**Want an AI assistant that can actually work on your Windows desktop, not just describe the steps?**
+
+The **[official YourHand service](https://yourhand.wolvexai.com/?utm_source=github&utm_medium=organic&utm_campaign=yourhand_community_readme)** provides the hosted sign-in and Windows installation workflow for authorized devices. Connect compatible AI clients to open apps, interact with Windows, manage files and automate tasks across computers you own or are permitted to operate.
+
+**[Explore YourHand and get started →](https://yourhand.wolvexai.com/?utm_source=github&utm_medium=organic&utm_campaign=yourhand_community_readme)**
+
+**Developers and self-hosters:** this repository is the separately maintained **AGPL-3.0 community source preview** for inspection, testing and contributions. It is not the installer or source deployment for the hosted service. Read the status and limitations below before running anything.
+
 > **Release status: source preview, not a production-ready installer.** This repository publishes a separately reviewed community source snapshot. The official hosted YourHand service and its Windows installer are separate deployments. Do not deploy this checkout over an existing installation or connect it to a production customer database. See [what works and what remains](docs/PROJECT_STATUS.md).
 
 ## Overview
